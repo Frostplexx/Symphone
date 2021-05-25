@@ -12,7 +12,7 @@ const createWindow = () => {
     height: 600,
     icon:'icon.ico',
     frame: false,
-    //resizable: false,
+    resizable: false,
     webPreferences:{
       nodeIntegration: true,
       contextIsolation: false,
@@ -25,7 +25,7 @@ const createWindow = () => {
   mainWindow.removeMenu();
 
   // Open the DevTools.
-  mainWindow.webContents.openDevTools();
+  //mainWindow.webContents.openDevTools();
 
 };
 
