@@ -1,6 +1,6 @@
 {
-  "name": "symphone",
-  "productName": "symphone",
+  "name": "Symphone",
+  "productName": "Symphone",
   "version": "0.0.1",
   "description": "A graphical user interface for the python spotify_dl and youtube-dl command line tool",
   "main": "src/index.js",

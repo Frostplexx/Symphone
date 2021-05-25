@@ -1,11 +1,39 @@
 :root{
-  --accent-color: red;
+  --accent-color: #1F2428;
   --background-color: #1F2428;
   /* #1F2428 */
   background-color: var(--background-color);
   color: var(--darkmode-text-color);
   /* #058eee */
 }
+
+#splash.is-active{
+  display: block;
+  opacity:    1; 
+  background: #1F2428; 
+  width:      100%;
+  height:     100%; 
+  z-index:    10;
+  top:        0; 
+  left:       0; 
+  position:   fixed; 
+}
+
+#splash{
+  display: none;
+}
+
+#symphonelogo{
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+  width: 200px;
+  height: 200px;
+}
+
 
 #clearBtn{
   background-color: var(--background-color);
@@ -55,14 +83,7 @@ body {
   background-color: var(--background-color);
 }
 
-#output{
-  float: right;
-  width: 47%;
-  padding-top: 5px;
-  padding-right: 10px;
-  background-color: var(--background-color);
 
-}
 .button{
   background-color: var(--background-color);
 }
@@ -72,7 +93,7 @@ body {
   height: 23rem;
   white-space: normal;
   overflow: scroll;
-  background-color: rgb(70, 70, 70);
+  background-color: rgb(43, 43, 43);
   color:white;
   line-break: normal;
   white-space: pre-line;
@@ -165,7 +186,6 @@ body {
   margin-top: 30px;
   float: right;
   left: 50%;
-  background-color: var(--background-color);
 }
 
 
@@ -298,3 +318,4 @@ input:checked + .slider:before {
 #pyprogress.is-active{
   display: block;
 }
+

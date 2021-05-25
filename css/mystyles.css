@@ -2,12 +2,13 @@
 /* Bulma Utilities */
 
 :root{
-  --accent-color: rgb(243, 18, 18);
+  --accent-color: #1F2428;
   --text-color: #f7f7f7;
   --darkmode-text-color: #f7f7f7;
   --background-color: #1F2428;
   --hover-color: #f2f2f2;
   --tab-hover-color: white;
+  --darkmode-secondcolor: white;
 }
 
 .tabcontent{
@@ -79,6 +80,15 @@
 
 #min-btn:hover{
   background-color: rgba(129, 129, 129, 0.3);
+}
+
+#output{
+  float: right;
+  width: 47%;
+  padding-top: 5px;
+  padding-right: 10px;
+  background-color: var(--darkmode-secondcolor);
+
 }
 
 
@@ -461,10 +471,10 @@ table th {
 
 /* Bulma Elements */
 .box {
-  background-color: white;
+  background-color: var(--darkmode-secondcolor);
   border-radius: 6px;
   box-shadow: 0 0.5em 1em -0.125em rgba(10, 10, 10, 0.1), 0 0px 0 1px rgba(10, 10, 10, 0.02);
-  color: #4a4a4a;
+  color: var(--darkmode-text-color);
   display: block;
   padding: 1.25rem; }
 
@@ -475,10 +485,10 @@ a.box:active {
   box-shadow: inset 0 1px 2px rgba(10, 10, 10, 0.2), 0 0 0 1px #3273dc; }
 
 .button {
-  background-color: white;
+  background-color: var(--darkmode-secondcolor);
   border-color: var(--accent-color);
   border-width: 1px;
-  color: #363636;
+  color: var(--darkmode-text-color);
   cursor: pointer;
   justify-content: center;
   padding-bottom: calc(0.5em - 1px);
@@ -1742,22 +1752,22 @@ div.icon-text {
   padding: 0;
   width: 100%; }
   .progress::-webkit-progress-bar {
-    background-color: #ededed; }
+    background-color: var(--background-color); }
   .progress::-webkit-progress-value {
-    background-color: #4a4a4a; }
+    background-color: var(--background-color); }
   .progress::-moz-progress-bar {
-    background-color: #4a4a4a; }
+    background-color: var(--background-color); }
   .progress::-ms-fill {
-    background-color: #4a4a4a;
+    background-color: var(--background-color);
     border: none; }
   .progress.is-white::-webkit-progress-value {
-    background-color: white; }
+    background-color: var(--background-color); }
   .progress.is-white::-moz-progress-bar {
-    background-color: white; }
+    background-color: var(--background-color); }
   .progress.is-white::-ms-fill {
-    background-color: white; }
+    background-color: var(--background-color); }
   .progress.is-white:indeterminate {
-    background-image: linear-gradient(to right, white 30%, #ededed 30%); }
+    background-image: linear-gradient(to right, var(--background-color) 30%, var(--background-color) 30%); }
   .progress.is-black::-webkit-progress-value {
     background-color: #0a0a0a; }
   .progress.is-black::-moz-progress-bar {
@@ -1765,15 +1775,15 @@ div.icon-text {
   .progress.is-black::-ms-fill {
     background-color: #0a0a0a; }
   .progress.is-black:indeterminate {
-    background-image: linear-gradient(to right, #0a0a0a 30%, #ededed 30%); }
+    background-image: linear-gradient(to right, #0a0a0a 30%, var(--background-color) 30%); }
   .progress.is-light::-webkit-progress-value {
-    background-color: whitesmoke; }
+    background-color: var(--background-color); }
   .progress.is-light::-moz-progress-bar {
-    background-color: whitesmoke; }
+    background-color: var(--background-color); }
   .progress.is-light::-ms-fill {
-    background-color: whitesmoke; }
+    background-color: var(--background-color); }
   .progress.is-light:indeterminate {
-    background-image: linear-gradient(to right, whitesmoke 30%, #ededed 30%); }
+    background-image: linear-gradient(to right, var(--background-color) 30%, var(--background-color) 30%); }
   .progress.is-dark::-webkit-progress-value {
     background-color: #363636; }
   .progress.is-dark::-moz-progress-bar {
@@ -1781,7 +1791,7 @@ div.icon-text {
   .progress.is-dark::-ms-fill {
     background-color: #363636; }
   .progress.is-dark:indeterminate {
-    background-image: linear-gradient(to right, #363636 30%, #ededed 30%); }
+    background-image: linear-gradient(to right, #363636 30%, var(--background-color) 30%); }
   .progress.is-primary::-webkit-progress-value {
     background-color: var(--accent-color); }
   .progress.is-primary::-moz-progress-bar {
@@ -1789,7 +1799,7 @@ div.icon-text {
   .progress.is-primary::-ms-fill {
     background-color: var(--accent-color); }
   .progress.is-primary:indeterminate {
-    background-image: linear-gradient(to right, var(--accent-color) 30%, #ededed 30%); }
+    background-image: linear-gradient(to right, var(--accent-color) 30%, var(--background-color) 30%); }
   .progress.is-link::-webkit-progress-value {
     background-color: #3273dc; }
   .progress.is-link::-moz-progress-bar {
@@ -1797,7 +1807,7 @@ div.icon-text {
   .progress.is-link::-ms-fill {
     background-color: #3273dc; }
   .progress.is-link:indeterminate {
-    background-image: linear-gradient(to right, #3273dc 30%, #ededed 30%); }
+    background-image: linear-gradient(to right, #3273dc 30%, var(--background-color) 30%); }
   .progress.is-info::-webkit-progress-value {
     background-color: var(--accent-color); }
   .progress.is-info::-moz-progress-bar {
@@ -1805,7 +1815,7 @@ div.icon-text {
   .progress.is-info::-ms-fill {
     background-color: var(--accent-color); }
   .progress.is-info:indeterminate {
-    background-image: linear-gradient(to right, var(--accent-color) 30%, #ededed 30%); }
+    background-image: linear-gradient(to right, var(--accent-color) 30%, var(--background-color) 30%); }
   .progress.is-success::-webkit-progress-value {
     background-color: #48c774; }
   .progress.is-success::-moz-progress-bar {
@@ -1813,7 +1823,7 @@ div.icon-text {
   .progress.is-success::-ms-fill {
     background-color: #48c774; }
   .progress.is-success:indeterminate {
-    background-image: linear-gradient(to right, #48c774 30%, #ededed 30%); }
+    background-image: linear-gradient(to right, #48c774 30%, var(--background-color) 30%); }
   .progress.is-warning::-webkit-progress-value {
     background-color: #ffdd57; }
   .progress.is-warning::-moz-progress-bar {
@@ -1821,7 +1831,7 @@ div.icon-text {
   .progress.is-warning::-ms-fill {
     background-color: #ffdd57; }
   .progress.is-warning:indeterminate {
-    background-image: linear-gradient(to right, #ffdd57 30%, #ededed 30%); }
+    background-image: linear-gradient(to right, #ffdd57 30%, var(--background-color) 30%); }
   .progress.is-danger::-webkit-progress-value {
     background-color: #f14668; }
   .progress.is-danger::-moz-progress-bar {
@@ -1829,14 +1839,14 @@ div.icon-text {
   .progress.is-danger::-ms-fill {
     background-color: #f14668; }
   .progress.is-danger:indeterminate {
-    background-image: linear-gradient(to right, #f14668 30%, #ededed 30%); }
+    background-image: linear-gradient(to right, #f14668 30%, var(--background-color) 30%); }
   .progress:indeterminate {
     animation-duration: 1.5s;
     animation-iteration-count: infinite;
     animation-name: moveIndeterminate;
     animation-timing-function: linear;
-    background-color: #ededed;
-    background-image: linear-gradient(to right, #4a4a4a 30%, #ededed 30%);
+    background-color: var(--background-color);
+    background-image: linear-gradient(to right, #4a4a4a 30%, var(--background-color) 30%);
     background-position: top left;
     background-repeat: no-repeat;
     background-size: 150% 150%; }
@@ -2240,18 +2250,18 @@ a.tag:hover {
 
 /* Bulma Form */
 .input, .textarea, .select select {
-  background-color: white;
-  border-color: #dbdbdb;
+  background-color: var(--darkmode-secondcolor);
+  border-color: var(--tab-hover-color);
   border-radius: 4px;
-  color: #363636; }
+  color: var(--darkmode-text-color); }
   .input::-moz-placeholder, .textarea::-moz-placeholder, .select select::-moz-placeholder {
-    color: rgba(54, 54, 54, 0.3); }
+    color: var(--darkmode-text-color); opacity: 0.4;}
   .input::-webkit-input-placeholder, .textarea::-webkit-input-placeholder, .select select::-webkit-input-placeholder {
-    color: rgba(54, 54, 54, 0.3); }
+    color:  var(--darkmode-text-color); opacity: 0.4;}
   .input:-moz-placeholder, .textarea:-moz-placeholder, .select select:-moz-placeholder {
-    color: rgba(54, 54, 54, 0.3); }
+    color:  var(--darkmode-text-color); opacity: 0.4;}
   .input:-ms-input-placeholder, .textarea:-ms-input-placeholder, .select select:-ms-input-placeholder {
-    color: rgba(54, 54, 54, 0.3); }
+    color:  var(--darkmode-text-color); opacity: 0.4;}
   .input:hover, .textarea:hover, .select select:hover, .is-hovered.input, .is-hovered.textarea, .select select.is-hovered {
     border-color: #b5b5b5; }
   .input:focus, .textarea:focus, .select select:focus, .is-focused.input, .is-focused.textarea, .select select.is-focused, .input:active, .textarea:active, .select select:active, .is-active.input, .is-active.textarea, .select select.is-active {
@@ -3197,14 +3207,14 @@ a.tag:hover {
   z-index: 20; }
 
 .dropdown-content {
-  background-color: white;
+  background-color: var(--darkmode-secondcolor);
   border-radius: 4px;
   box-shadow: 0 0.5em 1em -0.125em rgba(10, 10, 10, 0.1), 0 0px 0 1px rgba(10, 10, 10, 0.02);
   padding-bottom: 0.5rem;
   padding-top: 0.5rem; }
 
 .dropdown-item {
-  color: #4a4a4a;
+  color: var(--darkmode-text-color);
   display: block;
   font-size: 0.875rem;
   line-height: 1.5;
@@ -3219,8 +3229,8 @@ button.dropdown-item {
   width: 100%; }
   a.dropdown-item:hover,
   button.dropdown-item:hover {
-    background-color: whitesmoke;
-    color: #0a0a0a; }
+    background-color:  var(--hover-color);
+    color: var(--darkmode-text-color); }
   a.dropdown-item.is-active,
   button.dropdown-item.is-active {
     background-color: #3273dc;

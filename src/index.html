@@ -13,6 +13,12 @@
 </head>
 
 <body>
+  
+  <div id="splash" class="is-active">
+    <div id="symphonelogo">
+      <img src="https://i.imgur.com/YnyXUTL.png" alt="Symphone Logo" >
+    </div>
+  </div>
 
   <div id="title-bar">
     <div id="title">
@@ -225,7 +231,7 @@
       </p>
       <ul class="menu-list">
         <li><a onclick="menuswitch('auth', this)" class="is-active">Authentication</a></li>
-        <li><a onclick="menuswitch('python', this);selfcheck();">Python</a></li>
+        <li><a onclick="menuswitch('python', this);selfcheck();">Dependencies</a></li>
         <li><a onclick="menuswitch('theme', this)">Theme</a></li>
       </ul>
       <p class="menu-label">
@@ -265,22 +271,22 @@
       <section id="python" class="settingsContent">
         <h1 class="title is-5">
           <i class="fas fa-file-code"></i>
-          Python
+          Dependencies
         </h1>
 
         <div class="box">
           <span style="text-decoration: underline;">Python:</span>
-          <span id="pythoncheck">Not Installed</span>
+          <span id="pythoncheck"></span>
         </div>
         <div class="box">
           <span style="text-decoration: underline;">Pip:</span>
-          <span id="pipcheck">Not Installed</span>
+          <span id="pipcheck"></span>
         </div>
 
 
         <div class="box">
          <span style="text-decoration: underline;"> spotify_dl:</span>
-          <span id="spotifycheck">Not Installed</span>
+          <span id="spotifycheck"></span>
           <button id="downSpotifyBtn" class="button is-primary" onclick=downloadspotify() disabled>
             <span class="icon">
               <i class="fas fa-download" aria-hidden="true"></i>
@@ -294,7 +300,7 @@
         </div>
         <div class="box">
           <span style="text-decoration: underline;">youtube_dl:</span> 
-          <span id="youtubecheck">Not Installed</span>
+          <span id="youtubecheck"></span>
             <button id="downYoutubeBtn" class="button is-primary" onclick=downloadyoutube() disabled>
               <span class="icon">
                 <i class="fas fa-download" aria-hidden="true"></i>

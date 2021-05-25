@@ -42,11 +42,13 @@ process.env.SPOTIPY_CLIENT_ID = readSettings("clientid");
 
   if (darkswitch.checked) {
     document.documentElement.style.setProperty('--background-color', "#1F2428");
+    document.documentElement.style.setProperty('--darkmode-secondcolor', "#424242");
     document.documentElement.style.setProperty('--darkmode-text-color', "#ebebeb");
     document.documentElement.style.setProperty('--hover-color', "#363636");
     document.documentElement.style.setProperty('--tab-hover-color', "#ababab");
   } else {
     document.documentElement.style.setProperty('--background-color', "#FFFFFF");
+    document.documentElement.style.setProperty('--darkmode-secondcolor',"#FFFFFF");
     document.documentElement.style.setProperty('--darkmode-text-color', "#4a4a4a");
     document.documentElement.style.setProperty('--hover-color', "#f2f2f2");
     document.documentElement.style.setProperty('--tab-hover-color', "#919191");
@@ -57,11 +59,13 @@ process.env.SPOTIPY_CLIENT_ID = readSettings("clientid");
     writeSettings("darkmode", darkswitch.checked);
     if (darkswitch.checked) {
       document.documentElement.style.setProperty('--background-color', "#1F2428");
+      document.documentElement.style.setProperty('--darkmode-secondcolor', "#424242");
       document.documentElement.style.setProperty('--darkmode-text-color', "#ebebeb");
       document.documentElement.style.setProperty('--hover-color', "#363636");
       document.documentElement.style.setProperty('--tab-hover-color', "#ababab");
     } else {
       document.documentElement.style.setProperty('--background-color', "#FFFFFF");
+      document.documentElement.style.setProperty('--darkmode-secondcolor',"#FFFFFF");
       document.documentElement.style.setProperty('--darkmode-text-color', "#4a4a4a");
       document.documentElement.style.setProperty('--hover-color', "#f2f2f2");
       document.documentElement.style.setProperty('--tab-hover-color', "#919191");
@@ -483,3 +487,6 @@ function writeSettings(name, value) {
       }
   };
 })();
+
+
+document.getElementById("splash").classList.remove("is-active");
