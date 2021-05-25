@@ -1,0 +1,300 @@
+:root{
+  --accent-color: red;
+  --background-color: #1F2428;
+  /* #1F2428 */
+  background-color: var(--background-color);
+  color: var(--darkmode-text-color);
+  /* #058eee */
+}
+
+#clearBtn{
+  background-color: var(--background-color);
+}
+
+#downYoutubeBtn, #delYoutubeBtn, #downSpotifyBtn, #delSpotifyBtn{
+  float: right;
+  margin: none;
+  padding: none;
+  bottom: 10px;
+}
+
+#delYoutubeBtn, #delSpotifyBtn{
+  margin-right: 10px;
+}
+
+
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  margin: 5px;
+  color: white;
+  padding: 10px;
+}
+
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+#tabs{
+  padding-left: 20px;
+  padding-right: 20px;
+  background-color: var(--background-color);
+
+
+}
+
+#main{
+  background-color: var(--background-color);
+  color: white;
+}
+
+#mainbody{
+  float: left;
+  width: 50%;
+  background-color: var(--background-color);
+}
+
+#output{
+  float: right;
+  width: 47%;
+  padding-top: 5px;
+  padding-right: 10px;
+  background-color: var(--background-color);
+
+}
+.button{
+  background-color: var(--background-color);
+}
+
+#outtext{
+  text-overflow: clip;
+  height: 23rem;
+  white-space: normal;
+  overflow: scroll;
+  background-color: rgb(70, 70, 70);
+  color:white;
+  line-break: normal;
+  white-space: pre-line;
+  display: flex;
+  flex-direction: column-reverse;
+}
+
+#loading{
+  position: absolute;
+  bottom: 1%;
+  width: 95%;
+  margin: none;
+  display: none;
+}
+
+#clearBtn{
+  float: right;
+  margin: 10px;
+  margin-top: 20px;
+}
+
+ .tabs:not(:last-child) {
+  margin-bottom: 0;
+}
+
+.tabcontent {
+  padding: 1rem;
+  display: none;
+  background-color: var(--background-color);
+}
+
+.tabcontent.is-active {
+  display: block;
+  background-color: var(--background-color);
+}
+
+#msg {
+  padding: 1rem;
+  display: none;
+}
+
+#msg.is-active{
+  display: block;
+}
+
+#settingsmenu{
+  float: left;
+  width: 20%;
+  background-color: var(--background-color);
+
+}
+
+
+#settingsContainer{
+  float: right;
+  width: 75%;
+  padding-right: 5%;
+  background-color: var(--background-color);
+}
+
+.settingsContent{
+  display: none;
+  background-color: var(--background-color);
+}
+
+.settingsContent.is-active{
+  display: block;
+  background-color: var(--background-color);
+}
+
+#examplebtn{
+  float: left;
+  /* background-color: var(--accent-color); */
+  width: 25%;
+}
+
+#examplenotif{
+  float: right;
+  /* background-color: var(--accent-color); */
+  width: 73%;
+}
+
+
+
+#examplebox{
+  height: 130px;
+  width: 90%;
+  margin-right: unset;
+  padding: 10px;
+  margin-top: 30px;
+  float: right;
+  left: 50%;
+  background-color: var(--background-color);
+}
+
+
+#accentcolor{
+  height: 70px;
+  float: left;
+  width: 30%;
+  margin-top: 5px;
+  margin-left: 10px;
+}
+
+#accentclrBtn{
+  top: 5px;
+  float: left;
+  margin: auto;
+  margin-left: 5px;
+}
+
+#darklabel{
+  margin-right: 10px;
+  margin-left: 10px;
+}
+
+
+#darkmodeblock{
+  margin-top: 130px;
+  margin-right: 0;
+}
+
+/* The switch - the box around the slider */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 40px;
+  height: 24px;
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* The slider */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 16px;
+  width: 16px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: var(--accent-color);
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px var(--accent-color);
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(16px);
+  -ms-transform: translateX(16px);
+  transform: translateX(16px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
+
+#convertdropdown{
+  float: left;
+}
+
+#convertBtn{
+  float: left	;
+  margin-right: 10px;
+}
+
+#title-bar {
+  -webkit-app-region: drag;
+  height: 20px;
+  text-align: left;
+  line-height: 20px;
+  vertical-align: middle;
+  background-color: var(--background-color);
+  padding: none;
+  margin: none;
+}
+
+
+#title-bar-btns {
+  float: right;
+  -webkit-app-region: no-drag;
+}
+
+#dropdownsource{
+  float: left;
+  margin-right: 10px;
+}
+
+#pyprogress{
+  display: none;
+}
+
+
+#pyprogress.is-active{
+  display: block;
+}

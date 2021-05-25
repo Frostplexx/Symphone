@@ -1,0 +1,44 @@
+Date : 2021-05-20 23:53:30
+Directory : d:\Projects\SpotifyDL_GUI\SpotifyDL_GUI\SpotifyDL_GUI
+Total : 10 files,  13160 codes, 53 comments, 763 blanks, all 13976 lines
+
+Languages
++-------------+------------+------------+------------+------------+------------+
+| language    | files      | code       | comment    | blank      | total      |
++-------------+------------+------------+------------+------------+------------+
+| CSS         |          2 |      7,340 |         29 |        632 |      8,001 |
+| JSON        |          3 |      5,328 |          0 |          2 |      5,330 |
+| JavaScript  |          2 |        265 |         24 |         87 |        376 |
+| Django HTML |          1 |        213 |          0 |         38 |        251 |
+| SCSS        |          1 |         13 |          0 |          3 |         16 |
+| Django txt  |          1 |          1 |          0 |          1 |          2 |
++-------------+------------+------------+------------+------------+------------+
+
+Directories
++--------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                                             | files      | code       | comment    | blank      | total      |
++--------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                                                |         10 |     13,160 |         53 |        763 |     13,976 |
+| css                                                                                              |          2 |      7,340 |         29 |        632 |      8,001 |
+| sass                                                                                             |          1 |         13 |          0 |          3 |         16 |
+| sdfafs                                                                                           |          1 |          1 |          0 |          1 |          2 |
+| sdfafs\My Playlist #6                                                                            |          1 |          1 |          0 |          1 |          2 |
+| src                                                                                              |          4 |        485 |         24 |        125 |        634 |
++--------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++--------------------------------------------------------------------------------------------------+-------------+------------+------------+------------+------------+
+| filename                                                                                         | language    | code       | comment    | blank      | total      |
++--------------------------------------------------------------------------------------------------+-------------+------------+------------+------------+------------+
+| d:\Projects\SpotifyDL_GUI\SpotifyDL_GUI\SpotifyDL_GUI\css\index.css                              | CSS         |        169 |         19 |         47 |        235 |
+| d:\Projects\SpotifyDL_GUI\SpotifyDL_GUI\SpotifyDL_GUI\css\mystyles.css                           | CSS         |      7,171 |         10 |        585 |      7,766 |
+| d:\Projects\SpotifyDL_GUI\SpotifyDL_GUI\SpotifyDL_GUI\package-lock.json                          | JSON        |      5,256 |          0 |          1 |      5,257 |
+| d:\Projects\SpotifyDL_GUI\SpotifyDL_GUI\SpotifyDL_GUI\package.json                               | JSON        |         65 |          0 |          1 |         66 |
+| d:\Projects\SpotifyDL_GUI\SpotifyDL_GUI\SpotifyDL_GUI\sass\mystyles.scss                         | SCSS        |         13 |          0 |          3 |         16 |
+| d:\Projects\SpotifyDL_GUI\SpotifyDL_GUI\SpotifyDL_GUI\sdfafs\My Playlist #6\downloaded_songs.txt | Django txt  |          1 |          0 |          1 |          2 |
+| d:\Projects\SpotifyDL_GUI\SpotifyDL_GUI\SpotifyDL_GUI\src\index.html                             | Django HTML |        213 |          0 |         38 |        251 |
+| d:\Projects\SpotifyDL_GUI\SpotifyDL_GUI\SpotifyDL_GUI\src\index.js                               | JavaScript  |         31 |         15 |         12 |         58 |
+| d:\Projects\SpotifyDL_GUI\SpotifyDL_GUI\SpotifyDL_GUI\src\script.js                              | JavaScript  |        234 |          9 |         75 |        318 |
+| d:\Projects\SpotifyDL_GUI\SpotifyDL_GUI\SpotifyDL_GUI\src\settings.json                          | JSON        |          7 |          0 |          0 |          7 |
+| Total                                                                                            |             |     13,160 |         53 |        763 |     13,976 |
++--------------------------------------------------------------------------------------------------+-------------+------------+------------+------------+------------+

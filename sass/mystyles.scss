@@ -1,0 +1,15 @@
+@charset "utf-8";
+$accent-color: #33ff00; 
+$tabs-link-active-color: $accent-color; 
+$tabs-link-active-border-bottom-color: $accent-color;
+$primary: $accent-color;
+$info: $accent-color;
+$menu-item-active-background-color: $accent-color;
+$button-hover-color: $accent-color;
+$button-focus-color: $accent-color;
+$button-hover-border-color: $accent-color;
+$button-active-color: $accent-color;
+$button-border-color: $accent-color;
+@import "../node_modules/bulma/bulma.sass";
+
+
