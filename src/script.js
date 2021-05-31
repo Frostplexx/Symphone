@@ -14,6 +14,9 @@ var button = document.getElementById('downloadBtn');
 process.env.SPOTIPY_CLIENT_SECRET = readSettings("clientsecret");
 process.env.SPOTIPY_CLIENT_ID = readSettings("clientid");
 
+process.env.Path += ";"+ __dirname;
+
+// console.log(process.env.Path);
 
 // Coloring
 
@@ -162,9 +165,9 @@ function download() {
   const dir = document.querySelector('#dirfield').value;
   
   let source = url.split(".")[1];
-  console.log(source);
-  // outtext.textContent = " "; 
-  console.log(url);
+  // console.log(source);
+  outtext.textContent = " "; 
+  // console.log(url);
   button.classList.add("is-loading")
 
 
@@ -213,7 +216,7 @@ function download() {
     console.log("Source Youtube");
 
     let spawn = require('child_process').spawn,
-    yt = spawn("youtube-dl",[ "--extract-audio", "--audio-format", "mp3", "-o", dir + '\\%(title)s.%(ext)s', url]);
+    yt = spawn("youtube-dl",[ "--extract-audio", "--audio-format", "mp3", "-o", dir + '\\%(playlist_title)s\\%(title)s.%(ext)s', url]);
     console.log(yt)
 
     yt.stdout.on('data', function (data) {
@@ -319,9 +322,11 @@ async function browse(fieldid) {
   if (process.env.SPOTIPY_CLIENT_ID == "" || process.env.SPOTIPY_CLIENT_SECRET == "") {
     const msg = document.querySelector('#msg');
     console.log("no ID and Secret")
-    msg.classList.add('is-active');
+    if(document.querySelector('#updatemsg').ClassName == "is-active"){
+      msg.classList.add('is-active');
+    }
   } else {
-    console.log("id and scecret found!")
+    msg.classList.remove('is-active');
   }
 
   let clientid = document.getElementById("clientid");
@@ -348,7 +353,9 @@ async function browse(fieldid) {
     if (process.env.SPOTIPY_CLIENT_ID == undefined || process.env.SPOTIPY_CLIENT_SECRET == undefined) {
       const msg = document.querySelector('#msg');
       console.log("no ID and Secret")
-      msg.classList.add('is-active');
+      if(document.querySelector('#updatemsg').ClassName == "is-active"){
+        msg.classList.add('is-active');
+      }
     } else {
       console.log("id and scecret found!")
       msg.classList.remove('is-active');
@@ -433,11 +440,14 @@ async function browse(fieldid) {
 
 }
 
+
+
+
 //helperfunctions
 
 
 
-console.log(settingsPath);
+// console.log(settingsPath);
 
 function readSettings(setting) {
   let rawdata = fs.readFileSync(__dirname + "\\settings.json");
@@ -463,16 +473,6 @@ function writeSettings(name, value) {
           var window = BrowserWindow.getFocusedWindow();
           window.minimize();
       });
-
-      // // Maximize window
-      // document.getElementById("max-btn").addEventListener("click", (e) => {
-      //     var window = BrowserWindow.getFocusedWindow();
-      //     if(window.isMaximized()){
-      //         window.unmaximize();
-      //     }else{
-      //         window.maximize();
-      //     }
-      // });
 
       // Close app
       document.getElementById("close-btn").addEventListener("click", (e) => {

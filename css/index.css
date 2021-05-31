@@ -130,14 +130,40 @@ body {
   background-color: var(--background-color);
 }
 
-#msg {
+#msg{
   padding: 1rem;
   display: none;
 }
 
-#msg.is-active{
+#msg.is-active {
   display: block;
 }
+#updatemsg{
+  padding: 1rem;
+  display: none;
+}
+
+#updatemsg.is-active{
+  display: block;
+}
+
+#updateBtn{
+  padding-left: none;
+}
+#updateprogress{
+  display: none;
+  margin-top: 15px;
+  margin-bottom: -5px;
+  padding: none;
+}
+
+#updateprogress.is-active{
+  display: block;
+  margin-top: 15px;
+  margin-bottom: -5px;
+  padding: none;
+}
+
 
 #settingsmenu{
   float: left;

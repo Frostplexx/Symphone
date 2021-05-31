@@ -2,5 +2,7 @@
   "clientid": "",
   "clientsecret": "",
   "accentcolor": "#058eee",
-  "darkmode": false
+  "darkmode": false,
+  "autocheck": "true",
+  "devmode": "false"
 }
