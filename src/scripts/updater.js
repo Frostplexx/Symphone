@@ -1,16 +1,22 @@
 var request = require('request');
 var update = __dirname + "\\update.py"
-const msg = document.querySelector('#updatemsg');
-{
+const msg1 = document.getElementById('updatemsg');
+const msg2 = document.getElementById('updatemsgscnd');
+const upbtn = document.getElementById("upswitch");
+upbtn.addEventListener("change", checkUpdate);
+
 
     if(Boolean(readSettings("autocheck") === "true") ){
         checkUpdate();
+        upbtn.checked = true;
     } else {
-        msg.classList.remove("is-active")
+        msg1.classList.remove("is-active")
+        msg2.classList.remove("is-active")
+        upbtn.checked = false;
     }
 
     async function checkUpdate() {
-
+        writeSettings("autocheck", upbtn.checked)
         let rawdata = fs.readFileSync(__dirname.replace("src", "package.json"));
         let curver = JSON.parse(rawdata)["version"].replaceAll(".", "").replace("v", "");
         getNewVer("tag_name", function(retinfo){
@@ -21,7 +27,8 @@ const msg = document.querySelector('#updatemsg');
             if(newver > curver){
                 //update 
                 console.log("new Version Aviable")
-                msg.classList.add('is-active');
+                msg1.classList.add('is-active');
+                msg2.classList.add("is-active")
             }
         
             else if(newver < curver){
@@ -54,23 +61,22 @@ const msg = document.querySelector('#updatemsg');
 
 
     }
+    
+    function getFilenameFromUrl(url){
+        return url.substring(url.lastIndexOf('/') + 1);
+    }
 
-    // downloadnewVer(); 
 
     function downloadnewVer(){
         getNewVer("assets",function(retinfo){
             let downurl = retinfo[0][["browser_download_url"]];
             console.log(downurl);
 
-            // butterfly-wallpaper.jpeg
             var filename = getFilenameFromUrl(downurl);
             var downloadsFolder = __dirname;
-
-            function getFilenameFromUrl(url){
-                return url.substring(url.lastIndexOf('/') + 1);
-            }
-
             var finalPath = downloadsFolder + "\\" + filename;
+
+
             var progress = document.getElementById("updateprogress");
 
             downloadFile({
@@ -148,14 +154,13 @@ const msg = document.querySelector('#updatemsg');
         return settings[setting];
       }
       
-      function writeSettings(name, value) {
-        const fileName = settingsPath;
-        const file = require(fileName);
-        file[name] = value;
-        fs.writeFileSync(fileName, JSON.stringify(file, null, 2));
-      }
-      
-}
+
+    function writeSettings(name, value) {
+    const fileName = settingsPath;
+    const file = require(fileName);
+    file[name] = value;
+    fs.writeFileSync(fileName, JSON.stringify(file, null, 2));
+    }
 
 
 

@@ -137,17 +137,42 @@ body {
 
 #msg.is-active {
   display: block;
+  position: absolute;
+  width: 50%;
+  height: 150px;
+  z-index: 1;
 }
 #updatemsg{
   padding: 1rem;
   display: none;
+
 }
 
 #updatemsg.is-active{
   display: block;
+  z-index: 2;
+  position: absolute;
+  height: 150px;
+  width: 50%;
 }
 
+#updatemsgscnd{
+  display: none;
+}
+
+#updatemsgscnd.is-active{
+  display: block;
+  margin-top: 30%;
+}
+
+#manbtn{
+  margin-left: 10px;
+}
+
+
+
 #updateBtn{
+  top: 80%; 
   padding-left: none;
 }
 #updateprogress{
@@ -234,6 +259,7 @@ body {
   margin-right: 10px;
   margin-left: 10px;
 }
+
 
 
 #darkmodeblock{

@@ -58,7 +58,7 @@ process.env.Path += ";"+ __dirname;
   }
 
   function darkmode() {
-    console.log(darkswitch.checked);
+    // console.log(darkswitch.checked);
     writeSettings("darkmode", darkswitch.checked);
     if (darkswitch.checked) {
       document.documentElement.style.setProperty('--background-color', "#1F2428");
@@ -155,6 +155,18 @@ function menuswitch(id, parent) {
   document.getElementById(id).classList.add("is-active");
 }
 
+
+
+//notification delete button
+document.addEventListener('DOMContentLoaded', () => {
+  (document.querySelectorAll('.notification .delete') || []).forEach(($delete) => {
+    const $notification = $delete.parentNode;
+    document.querySelector('#msg').classList.add("is-active");
+    $delete.addEventListener('click', () => {
+      $notification.parentNode.removeChild($notification);
+    });
+  });
+});
 
 
 
@@ -322,9 +334,7 @@ async function browse(fieldid) {
   if (process.env.SPOTIPY_CLIENT_ID == "" || process.env.SPOTIPY_CLIENT_SECRET == "") {
     const msg = document.querySelector('#msg');
     console.log("no ID and Secret")
-    if(document.querySelector('#updatemsg').ClassName == "is-active"){
       msg.classList.add('is-active');
-    }
   } else {
     msg.classList.remove('is-active');
   }
@@ -353,9 +363,7 @@ async function browse(fieldid) {
     if (process.env.SPOTIPY_CLIENT_ID == undefined || process.env.SPOTIPY_CLIENT_SECRET == undefined) {
       const msg = document.querySelector('#msg');
       console.log("no ID and Secret")
-      if(document.querySelector('#updatemsg').ClassName == "is-active"){
         msg.classList.add('is-active');
-      }
     } else {
       console.log("id and scecret found!")
       msg.classList.remove('is-active');

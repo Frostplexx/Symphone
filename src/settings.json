@@ -3,6 +3,6 @@
   "clientsecret": "",
   "accentcolor": "#058eee",
   "darkmode": false,
-  "autocheck": "true",
+  "autocheck": true,
   "devmode": "false"
 }

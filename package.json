@@ -1,7 +1,7 @@
 {
   "name": "Symphone",
   "productName": "Symphone",
-  "version": "0.1.5",
+  "version": "0.1.0",
   "description": "A graphical user interface for the python spotify_dl and youtube-dl command line tool",
   "main": "src/index.js",
   "scripts": {
@@ -51,7 +51,8 @@
     "bulma-extensions": "^6.2.7",
     "electron-squirrel-startup": "^1.0.0",
     "ffmpeg.js": "^4.2.9003",
-    "request": "^2.88.2"
+    "request": "^2.88.2",
+    "v8-compile-cache": "^2.3.0"
   },
   "devDependencies": {
     "@electron-forge/cli": "^6.0.0-beta.54",

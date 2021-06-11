@@ -130,7 +130,7 @@
 
     <div id="outermsg">
       <div class="notification inner is-danger" id="msg">
-        "<strong>Spotify Client Secret and ID not found!
+        <strong>Spotify Client Secret and ID not found!
         </strong> You can go to <strong>https://developer.spotify.com/dashboard</strong> 
         and create a new App. Afterwards go to the Symphone Settings and paste the Client Secret 
         and ID under the Authentication Tab.
@@ -275,12 +275,38 @@
           </h1>
         </div>
         <div class="block">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
-          magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-          consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-          pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id
-          est
-          laborum.
+          <div class="block">
+            <button class="button is-primary" onclick="checkUpdate()" id="manbtn">
+              <span class="icon">
+                <i class="fas fa-sync-alt"></i>
+              </span>
+              <span>Check Manually</span>
+            </button>
+          </div>
+          <div class="blockk">
+            <label id="darklabel">Check for Updates on Startup:</label>
+            <label class="switch">
+              <input type="checkbox" id="upswitch">
+              <span class="slider round"></span>
+            </label>
+          </div>
+          <div class="notification inner is-info" id="updatemsgscnd">
+            <div class="block">
+              A new version is aviable! 
+              Do you want to update?
+            </div>
+            <div class="block">
+              <button id="updateBtn" class="button " onclick=downloadnewVer()>
+                <span class="icon">
+                  <i class="fas fa-upload"></i>
+                </span>
+                <span>Update</span>
+              </button>
+              <div class="block">
+                <progress class="progress is-small is-success" value="0" max="100" id="updateprogress"></progress>
+              </div>
+            </div>
+
         </div>
       </section>
 
