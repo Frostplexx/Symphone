@@ -13,19 +13,21 @@ const createWindow = () => {
     width: 900,
     height: 600,
     icon:'icon.ico',
+    transparent:true,
     frame: false,
     // resizable: false,
     webPreferences:{
       nodeIntegration: true,
       contextIsolation: false,
       enableRemoteModule: true,
+      experimentalFeatures: true,
     }
   });
   // and load the index.html of the app.
   mainWindow.loadFile(path.join(__dirname, 'index.html'));
   mainWindow.removeMenu();
   // Open the DevTools.
-  mainWindow.webContents.toggleDevTools();
+  // mainWindow.webContents.toggleDevTools();
 };
 
 

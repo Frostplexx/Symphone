@@ -2,10 +2,10 @@
   --accent-color: #1F2428;
   --background-color: #1F2428;
   /* #1F2428 */
-  background-color: var(--background-color);
   color: var(--darkmode-text-color);
   /* #058eee */
 }
+
 
 #splash.is-active{
   display: block;
@@ -54,9 +54,15 @@
 
 body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  margin: 5px;
-  color: white;
-  padding: 10px;
+
+}
+#maindiv{
+  background-color: var(--background-color);
+  height: 93%;
+  width: 100%;
+  z-index: 9;
+  position: fixed;
+  border-radius: 0px 0px 5px 5px;
 }
 
 
@@ -72,9 +78,8 @@ body {
 
 }
 
-#main{
+section{
   background-color: var(--background-color);
-  color: white;
 }
 
 #mainbody{
@@ -94,7 +99,7 @@ body {
   white-space: normal;
   overflow: scroll;
   background-color: rgb(43, 43, 43);
-  color:white;
+  /* color:white; */
   line-break: normal;
   white-space: pre-line;
   display: flex;
@@ -349,12 +354,14 @@ input:checked + .slider:before {
   background-color: var(--background-color);
   padding: none;
   margin: none;
+  border-radius: 5px 5px 0px 0px;
 }
 
 
 #title-bar-btns {
   float: right;
   -webkit-app-region: no-drag;
+  border-radius: 5px 5px 0px 0px;
 }
 
 #dropdownsource{

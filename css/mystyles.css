@@ -45,6 +45,7 @@
   opacity: 0.8;
   font-size: 13px;
   text-align: center;
+  
 }
 
 
@@ -64,12 +65,13 @@
   outline: none;
   height: auto;
   width: 30px;
-
+  border-radius: 0px 5px 0px 0px;
   /* background-color: blue; */
 }
 
 #close-btn:hover{
   background-color: rgb(226, 70, 70);
+  border-radius: 0px 5px 0px 0px;
 }
 
 #close-btn:hover #close{
@@ -354,7 +356,6 @@ th {
     text-align: inherit; }
 
 html {
-  background-color: white;
   font-size: 16px;
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
@@ -1529,6 +1530,7 @@ a.box:active {
     color: #363636; }
     .content table th:not([align]) {
       text-align: inherit; }
+
   .content table thead td,
   .content table thead th {
     border-width: 0 0 2px;
