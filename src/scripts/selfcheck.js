@@ -1,7 +1,7 @@
 
 
 var spawn = require('child_process').spawn;
-var installer = __dirname + "\\installer.py"
+var installer = __dirname + "\\scripts\\installer.py"
 var progress = document.querySelector("#pyprogress"); 
 progress.classList.add("is-active");
 function selfcheck() {

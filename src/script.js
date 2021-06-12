@@ -399,13 +399,13 @@ async function browse(fieldid) {
 
   function convert() {
     let format = document.getElementById("convertsel").textContent;
+    let dir = document.getElementById("convertdir").value;
     //ffmpeg -i "Imagine Dragons - It's Time.mp3" "Imagine Dragons - It's Time.ogg"
-
-    outsong = songname.split(".")
-    outsong[0] + format;
+    // outsong = songname.split(".")
+    // outsong[0] + format;
     let spawn = require('child_process').spawn,
-      conv = spawn("ffmpeg", ["-i", songname, outsong,]);
-    console.log(sp)
+      conv = spawn("python", [__dirname + "\\scripts\\installer.py",dir,format]);
+    console.log(conv)
 
     conv.stdout.on('data', function (data) {
       console.log('stdout: ' + data.toString());

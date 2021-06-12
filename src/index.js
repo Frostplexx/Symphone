@@ -27,7 +27,7 @@ const createWindow = () => {
   mainWindow.loadFile(path.join(__dirname, 'index.html'));
   mainWindow.removeMenu();
   // Open the DevTools.
-  // mainWindow.webContents.toggleDevTools();
+  mainWindow.webContents.toggleDevTools();
 };
 
 

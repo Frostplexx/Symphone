@@ -1,5 +1,5 @@
 var request = require('request');
-var update = __dirname + "\\update.py"
+var update = __dirname + "\\scripts\\update.py"
 const msg1 = document.getElementById('updatemsg');
 const msg2 = document.getElementById('updatemsgscnd');
 const upbtn = document.getElementById("upswitch");

@@ -62,7 +62,7 @@ body {
   width: 100%;
   z-index: 9;
   position: fixed;
-  border-radius: 0px 0px 5px 5px;
+  border-radius: 0px 0px 3px 3px;
 }
 
 
@@ -102,6 +102,7 @@ section{
   /* color:white; */
   line-break: normal;
   white-space: pre-line;
+  color: white;
   display: flex;
   flex-direction: column-reverse;
 }
@@ -361,7 +362,7 @@ input:checked + .slider:before {
 #title-bar-btns {
   float: right;
   -webkit-app-region: no-drag;
-  border-radius: 5px 5px 0px 0px;
+  border-radius: 3px 3px 0px 0px;
 }
 
 #dropdownsource{
