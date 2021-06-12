@@ -8,6 +8,7 @@ var settingsPath = path.join(__dirname, "settings.json").toString();
 //spotify_dl -l https://open.spotify.com/playlist/67JwlxPSFU2Qhx48xUFPLY -o C:\Users\danie\Music
 //"spotify_dl -l " + val +" -o C:\\Users\\danie\\Music"
 var outtext = document.getElementById("outtext");
+var convouttext = document.getElementById("convouttext");
 var button = document.getElementById('downloadBtn');
 
 
@@ -394,42 +395,51 @@ async function browse(fieldid) {
   function dropdownsel(format, src) {
     console.log("Selection: " + format);
     document.getElementById(src).textContent = format;
-
+    let dir = document.querySelector('#convertdir');
+    let formatselect = document.querySelector('#convertsel');
+    let convertBtn = document.querySelector('#convertBtn');
+    if (dir.value === "" || !formatselect.textContent.localeCompare("Format")) {
+      convertBtn.disabled = true; //button remains disabled
+    } else {
+      convertBtn.disabled = false; //button is enabled
+    }
   }
 
   function convert() {
     let format = document.getElementById("convertsel").textContent;
     let dir = document.getElementById("convertdir").value;
+    let installer = __dirname + "\\scripts\\convert.py";
+    let convbtn = document.getElementById("convertBtn");
     //ffmpeg -i "Imagine Dragons - It's Time.mp3" "Imagine Dragons - It's Time.ogg"
-    // outsong = songname.split(".")
-    // outsong[0] + format;
+
+    convbtn.classList.add("is-loading");
     let spawn = require('child_process').spawn,
-      conv = spawn("python", [__dirname + "\\scripts\\installer.py",dir,format]);
+      conv = spawn("python", [installer, dir,format]);
     console.log(conv)
 
     conv.stdout.on('data', function (data) {
       console.log('stdout: ' + data.toString());
-      outtext.textContent += data.toString() + "\n";
+      convouttext.textContent += data.toString() + "\n";
     });
 
     conv.stderr.on('data', function (data) {
       console.log('stderr: ' + data.toString());
-      outtext.textContent += data.toString() + "\n";
+      convouttext.textContent += data.toString() + "\n";
     });
 
     conv.on('exit', function (code) {
       var excode = code.toString();
       console.log('child process exited with code ' + excode);
-      button.classList.remove("is-loading");
+      convbtn.classList.remove("is-loading");
       switch (parseInt(excode)) {
         case 1:
           console.log("Finished with error!");
-          outtext.textContent += "Finished with errorcode: " + excode
+          convouttext.textContent += "Finished with errorcode: " + excode
           break;
 
         case 0:
           console.log("No Errors");
-          outtext.textContent += "Finished!"
+          convouttext.textContent += "Finished!"
           break;
         default:
           console.log(excode);
@@ -439,10 +449,11 @@ async function browse(fieldid) {
 
     conv.on('error', function (err) {
       console.log('Oh nyo?!?! You caused an ewwow!!11 pwease stop *looks at you* ' + err);
-      outtext.textContent += err;
+      convouttext.textContent += err;
       button.classList.remove("is-loading");
   
     });
+
 
   }
 

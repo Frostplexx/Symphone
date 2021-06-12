@@ -107,6 +107,20 @@ section{
   flex-direction: column-reverse;
 }
 
+#convouttext{
+  text-overflow: clip;
+  height: 23rem;
+  white-space: normal;
+  overflow: scroll;
+  background-color: rgb(43, 43, 43);
+  /* color:white; */
+  line-break: normal;
+  white-space: pre-line;
+  color: white;
+  display: flex;
+  flex-direction: column-reverse;
+}
+
 #loading{
   position: absolute;
   bottom: 1%;
