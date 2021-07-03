@@ -15,7 +15,7 @@ const createWindow = () => {
     icon:'icon.ico',
     transparent:true,
     frame: false,
-    // resizable: false,
+    resizable: false,
     webPreferences:{
       nodeIntegration: true,
       contextIsolation: false,
@@ -27,7 +27,7 @@ const createWindow = () => {
   mainWindow.loadFile(path.join(__dirname, 'index.html'));
   mainWindow.removeMenu();
   // Open the DevTools.
-  mainWindow.webContents.toggleDevTools();
+  // mainWindow.webContents.toggleDevTools();
 };
 
 

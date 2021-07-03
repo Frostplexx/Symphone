@@ -89,7 +89,7 @@
   width: 47%;
   padding-top: 5px;
   padding-right: 10px;
-  background-color: var(--darkmode-secondcolor);
+  background-color: var(--background-color);;
 
 }
 

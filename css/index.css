@@ -162,6 +162,8 @@ section{
   height: 150px;
   z-index: 1;
 }
+
+
 #updatemsg{
   padding: 1rem;
   display: none;

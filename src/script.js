@@ -103,6 +103,46 @@ process.env.Path += ";"+ __dirname;
 }
 
 
+//Spotify API key checks and stuff
+{
+  let clientid = document.getElementById("clientid");
+  let clientsecret = document.getElementById("clientsecret");
+  setTimeout(() => { update(); }, 500);
+
+  if (clientid.value === "" && clientsecret.value === "") {
+    clientid.value = readSettings("clientid");
+    clientsecret.value = readSettings("clientsecret");
+  } else {
+    writeSettings("clientid", clientid.value);
+    writeSettings("clientsecret", clientsecret.value)
+  }
+
+  clientid.addEventListener("change", update);
+  clientsecret.addEventListener("change", update);
+
+  function update() {
+    if(clientid.value != "" && clientsecret.value != ""){
+      writeSettings("clientid", clientid.value.replace(/\s/g, ''));
+      writeSettings("clientsecret", clientsecret.value.replace(/\s/g, ''))
+    }
+
+    process.env.SPOTIPY_CLIENT_SECRET = clientsecret.value.replace(/\s/g, '');
+    process.env.SPOTIPY_CLIENT_ID = clientid.value.replace(/\s/g, '');
+    const msg = document.querySelector('#msg');
+    if (process.env.SPOTIPY_CLIENT_ID == "" || process.env.SPOTIPY_CLIENT_SECRET == ""){
+      console.log("no ID and Secret")
+      msg.classList.add('is-active');
+      console.log(process.env.SPOTIPY_CLIENT_ID)
+      console.log(process.env.SPOTIPY_CLIENT_SECRET)
+    } else {
+      console.log("id and scecret found!")
+      msg.classList.remove('is-active');
+    }
+
+  }
+}
+
+
 
 //tab handling
 let tabsWithContent = (function () {
@@ -330,48 +370,7 @@ async function browse(fieldid) {
 }
 
 
-//Spotify API key checks and stuff
-{
-  if (process.env.SPOTIPY_CLIENT_ID == "" || process.env.SPOTIPY_CLIENT_SECRET == "") {
-    const msg = document.querySelector('#msg');
-    console.log("no ID and Secret")
-      msg.classList.add('is-active');
-  } else {
-    msg.classList.remove('is-active');
-  }
 
-  let clientid = document.getElementById("clientid");
-  let clientsecret = document.getElementById("clientsecret");
-
-  if (clientid.value === "" && clientsecret.value === "") {
-    clientid.value = readSettings("clientid");
-    clientsecret.value = readSettings("clientsecret");
-  } else {
-    writeSettings("clientid", clientid.value);
-    writeSettings("clientsecret", clientsecret.value)
-  }
-
-  clientid.addEventListener("change", update);
-  clientsecret.addEventListener("change", update);
-
-  function update() {
-    writeSettings("clientid", clientid.value.replace(/\s/g, ''));
-    writeSettings("clientsecret", clientsecret.value.replace(/\s/g, ''))
-
-    process.env.SPOTIPY_CLIENT_SECRET = clientsecret.value.replace(/\s/g, '');
-    process.env.SPOTIPY_CLIENT_ID = clientid.value.replace(/\s/g, '');
-
-    if (process.env.SPOTIPY_CLIENT_ID == undefined || process.env.SPOTIPY_CLIENT_SECRET == undefined) {
-      const msg = document.querySelector('#msg');
-      console.log("no ID and Secret")
-        msg.classList.add('is-active');
-    } else {
-      console.log("id and scecret found!")
-      msg.classList.remove('is-active');
-    }
-
-  }
-}
 
 //dorpdown and converter
 
