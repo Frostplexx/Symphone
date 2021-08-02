@@ -1,5 +1,6 @@
 var request = require('request');
 var update = __dirname + "\\scripts\\update.py"
+var path = require('path');
 const msg1 = document.getElementById('updatemsg');
 const msg2 = document.getElementById('updatemsgscnd');
 const upbtn = document.getElementById("upswitch");
@@ -149,7 +150,7 @@ upbtn.addEventListener("change", checkUpdate);
     }
 
     function readSettings(setting) {
-        let rawdata = fs.readFileSync(__dirname + "\\settings.json");
+        let rawdata = fs.readFileSync(path.join(__dirname, "settings.json"));
         let settings = JSON.parse(rawdata);
         return settings[setting];
       }

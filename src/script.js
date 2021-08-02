@@ -1,7 +1,6 @@
-const fs = require('fs');
 const app = require('electron')
 
-
+const fs = require('fs');
 var path = require('path');
 var settingsPath = path.join(__dirname, "settings.json").toString();
 
@@ -227,7 +226,7 @@ function download() {
   if(source.localeCompare("youtube")){
     console.log("Source Youtube");
     let spawn = require('child_process').spawn,
-    sp = spawn("spotify_dl", ["-l", url, "-o", dir]);
+    sp = spawn("python3", ["spotify_dl","-l", url, "-o", dir, "-s", "html"]);
     console.log(sp)
 
     sp.stdout.on('data', function (data) {
@@ -327,8 +326,12 @@ async function browse(fieldid) {
   if (filepath.filePaths[0] !== undefined) {
     dir.value = filepath.filePaths[0];
   }
-  stateconvertHandle();
-  statedownloadHandle(); 
+  // TODO
+  // stateconvertHandle();
+  // statedownloadHandle(); 
+
+  let downbtn = document.querySelector("#downloadBtn");
+  downbtn.disabled = false
 }
 
 //enable/disable download button
@@ -359,6 +362,7 @@ async function browse(fieldid) {
   formatselect.addEventListener("change", stateconvertHandle);
 
   convertBtn.disabled = true; //setting button state to disabled
+  
   function stateconvertHandle() {
     if (dir.value === "" || !formatselect.textContent.localeCompare("Format")) {
       convertBtn.disabled = true; //button remains disabled
@@ -368,7 +372,6 @@ async function browse(fieldid) {
   }
 
 }
-
 
 
 
@@ -468,7 +471,7 @@ async function browse(fieldid) {
 // console.log(settingsPath);
 
 function readSettings(setting) {
-  let rawdata = fs.readFileSync(__dirname + "\\settings.json");
+  let rawdata = fs.readFileSync(path.join(__dirname, "settings.json"));
   let settings = JSON.parse(rawdata);
   return settings[setting];
 }

@@ -27,7 +27,7 @@ const createWindow = () => {
   mainWindow.loadFile(path.join(__dirname, 'index.html'));
   mainWindow.removeMenu();
   // Open the DevTools.
-  // mainWindow.webContents.toggleDevTools();
+  mainWindow.webContents.toggleDevTools();
 };
 
 
@@ -60,3 +60,5 @@ app.on('activate', () => {
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and import them here.
+
+
