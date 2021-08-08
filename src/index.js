@@ -4,6 +4,8 @@ const path = require('path');
 const getToken = require("./getToken");
 
 const fs = require('fs');
+const { time } = require('console');
+const { electron } = require('process');
 var settingsPath = path.join(__dirname, "settings.json").toString();
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
@@ -34,6 +36,33 @@ const createWindow = () => {
   mainWindow.webContents.openDevTools();
 };
 
+const loginWindow = () => {
+
+  const loginWin = new BrowserWindow({
+    width: 900,
+    height: 600,
+    icon:'icon.ico',
+    frame: false,
+    // resizable: false,
+    webPreferences:{
+      nodeIntegration: true,
+      contextIsolation: false,
+      enableRemoteModule: true,
+      experimentalFeatures: true,
+    }
+  });
+  loginWin.loadURL("http://localhost:8888/login");
+  let login = getToken.auothorizeSpotify();
+  setTimeout(() => { 
+    console.log(login)
+    if(login){
+        loginWin.close();
+        createWindow();
+      }
+  }, 0000);
+ 
+}
+
 
 
 
@@ -41,8 +70,7 @@ const createWindow = () => {
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.on('ready', () => {
-  createWindow();
-
+  loginWindow();
 });
 
 // Quit when all windows are closed, except on macOS. There, it's common
@@ -64,5 +92,3 @@ app.on('activate', () => {
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and import them here.
-
-getToken.auothorizeSpotify();

@@ -5,7 +5,6 @@ const fs = require('fs');
 var path = require('path');
 var settingsPath = path.join(__dirname, "settings.json").toString();
 
-
 module.exports = {
   spotifyApi,
   auothorizeSpotify
@@ -44,12 +43,12 @@ var spotifyApi = new SpotifyWebApi({
   
 function auothorizeSpotify(){
     const app = express();
-
+    var loggedIn = false;
   app.get('/login', (req, res) => {
     res.redirect(spotifyApi.createAuthorizeURL(scopes));
   });
 
-  app.get('/callback', (req, res) => {
+  loggedIn = app.get('/callback', (req, res) => {
     const error = req.query.error;
     const code = req.query.code;
 
@@ -71,12 +70,13 @@ function auothorizeSpotify(){
 
         console.log('access_token:', access_token);
         console.log('refresh_token:', refresh_token);
+        writeSettings("access_token", access_token);
+        writeSettings("refresh_token", refresh_token);
 
         console.log(
           `Sucessfully retreived access token. Expires in ${expires_in} s.`
         );
-        res.send('Success! You can now close the window.');
-
+        res.send('Symphone was successfully authorized! You can now close this window');
         setInterval(async () => {
           let data1 = await spotifyApi.refreshAccessToken();
           let access_token1 = data1.body['access_token'];
@@ -89,6 +89,7 @@ function auothorizeSpotify(){
         console.error('Error getting Tokens:', error);
         res.send(`Error getting Tokens: ${error}`);
       });
+      return true
   });
 
   app.listen(8888, () =>
@@ -97,10 +98,8 @@ function auothorizeSpotify(){
   )
 );
 
+  return loggedIn;
 }
-
-
-
 
 
 function readSettings(setting) {
