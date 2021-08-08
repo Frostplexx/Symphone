@@ -12,19 +12,32 @@ spotifyApi.setRefreshToken(refreshToken);
 
 
 //Youtube Search stuff
-const usetube = require('usetube')
 const ytdl = require('ytdl-core');
+const youtube = require('scrape-youtube').default;
 
-//get Playlist ID
-var playlist = "https://open.spotify.com/playlist/2HNyg8hThHjgvlzDah7sHD?si=883761e844cf4da7";
-var playlistID = playlist.split("playlist/")[1].split("?si=")[0];
+
+
 
 //ffmpeg
 var ffmpeg = require('fluent-ffmpeg');
-const { resolve } = require('path');
+var ffmpegstatic = require('ffmpeg-static-electron');
+ffmpeg.setFfmpegPath(ffmpegstatic.path);
+
+module.exports = {
+  downloadSongs
+}
+
+
+function downloadSongs(playlist, dir){
+  // //get Playlist ID
+  let playlistID = playlist.split("playlist/")[1].split("?si=")[0];
+  getPlaylistTracks(playlistID, dir);
+}
+
+
 
 //GET SONGS FROM PLAYLIST
-async function getPlaylistTracks(playlistId) {
+async function getPlaylistTracks(playlistId, dir) {
   const data = await spotifyApi.getPlaylistTracks(playlistId, {
     offset: 0,
     limit: 100,
@@ -33,19 +46,26 @@ async function getPlaylistTracks(playlistId) {
   let tracks = [];
   for (let track_obj of data.body.items) {
     const track = track_obj.track
-    let dir = path.join(__dirname + `/music/${track.name.replace("//", "")}.mp4`);
     tracks.push(track);
     let video = track.artists[0].name + " - " + track.name
     console.log(video)
 
-    //search video
-    let videos = await usetube.searchVideo(video);
-    //download it
-    var y = ytdl('http://www.youtube.com/watch?v=' + videos.videos[0].id).pipe(fs.createWriteStream(dir));
-
+    youtube.search(video).then((results) => {
+      // Unless you specify a type, it will only return 'video' results
+      let videos = results.videos;
+      console.log(videos[0].title) 
+      return videos[0].id;
+    }).then((firstvid) => {
+       //download it
+       var downpath = path.join(dir, `/${track.name.replace("//", "")}.mp4`)
+    try {
+      var y = ytdl('http://www.youtube.com/watch?v=' + firstvid).pipe(fs.createWriteStream(downpath));
+    } catch (error) {
+      console.log(error);
+    }
     //when the download finishes convert the file and delete the old one
-    y.on("close", function(){
-      ffmpeg(dir)
+    y.on("finish", function(){
+      ffmpeg(downpath)
       .toFormat('mp3')
       .on('error', (err) => {
           console.log('An error occurred: ' + err.message);
@@ -56,19 +76,22 @@ async function getPlaylistTracks(playlistId) {
       .on('end', () => {
           console.log('Processing finished !');
           //delete old file
-          fs.unlinkSync(dir);
+          fs.unlinkSync(downpath);
       })
-      .save(__dirname + `/music/${track.name}.mp3`);//path where you want to save your file
+      .save(path.join(dir, `/r${track.name.replace("//", "")}.mp3`));//path where you want to save your file
     });
+    });
+   
   }
   return tracks;
   }
-  getPlaylistTracks(playlistID);
-
-
 
   function readSettings(setting) {
     let rawdata = fs.readFileSync(path.join(__dirname, "settings.json"));
     let settings = JSON.parse(rawdata);
     return settings[setting];
   }
+
+
+
+  

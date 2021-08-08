@@ -1,5 +1,5 @@
 const app = require('electron')
-
+const spotdl = require("./getSongs");
 const fs = require('fs');
 var path = require('path');
 var settingsPath = path.join(__dirname, "settings.json").toString();
@@ -16,7 +16,6 @@ process.env.SPOTIPY_CLIENT_ID = readSettings("clientid");
 
 process.env.Path += ";"+ __dirname;
 
-// console.log(process.env.Path);
 
 // Coloring
 
@@ -215,98 +214,13 @@ document.addEventListener('DOMContentLoaded', () => {
 function download() {
   const url = document.querySelector('#urlfield').value;
   const dir = document.querySelector('#dirfield').value;
-  
-  let source = url.split(".")[1];
+  spotdl.downloadSongs(url, dir);
   // console.log(source);
   outtext.textContent = " "; 
   // console.log(url);
   button.classList.add("is-loading")
 
-
-  if(source.localeCompare("youtube")){
-    console.log("Source Youtube");
-    let spawn = require('child_process').spawn,
-    sp = spawn("python3", ["spotify_dl","-l", url, "-o", dir, "-s", "html"]);
-    console.log(sp)
-
-    sp.stdout.on('data', function (data) {
-      console.log('stdout: ' + data.toString());
-      outtext.textContent += data.toString() + "\n";
-    });
-
-    sp.stderr.on('data', function (data) {
-      console.log('stderr: ' + data.toString());
-      outtext.textContent += data.toString() + "\n";
-    });
-
-    sp.on('exit', function (code) {
-      var excode = code.toString();
-      console.log('child process exited with code ' + excode);
-      button.classList.remove("is-loading");
-      switch (parseInt(excode)) {
-        case 1:
-          console.log("Finished with error!");
-          outtext.textContent += "Finished with errorcode: " + excode
-          break;
-
-        case 0:
-          console.log("No Errors");
-          outtext.textContent += "Finished!"
-          break;
-        default:
-          console.log(excode);
-          break;
-      }
-    });
-
-    sp.on('error', function (err) {
-      console.log('Oh nyo?!?! You caused an ewwow!!11 pwease stop *looks at you* ' + err);
-      outtext.textContent += err;
-      button.classList.remove("is-loading");
-    });
-  } else if(source.localeCompare("spotify")){
-    console.log("Source Youtube");
-
-    let spawn = require('child_process').spawn,
-    yt = spawn("youtube-dl",[ "--extract-audio", "--audio-format", "mp3", "-o", dir + '\\%(playlist_title)s\\%(title)s.%(ext)s', url]);
-    console.log(yt)
-
-    yt.stdout.on('data', function (data) {
-      console.log('stdout: ' + data.toString());
-      outtext.textContent += data.toString() + "\n";
-    });
-
-    yt.stderr.on('data', function (data) {
-      console.log('stderr: ' + data.toString());
-      outtext.textContent += data.toString() + "\n";
-    });
-
-    yt.on('exit', function (code) {
-      var excode = code.toString();
-      console.log('child process exited with code ' + excode);
-      button.classList.remove("is-loading");
-      switch (parseInt(excode)) {
-        case 1:
-          console.log("Finished with error!");
-          outtext.textContent += "Finished with errorcode: " + excode
-          break;
-
-        case 0:
-          console.log("No Errors");
-          outtext.textContent += "Finished!"
-          break;
-        default:
-          console.log(excode);
-          break;
-      }
-    });
-
-    yt.on('error', function (err) {
-      console.log('Oh nyo?!?! You caused an ewwow!!11 pwease stop *looks at you* ' + err);
-      outtext.textContent += err;
-      button.classList.remove("is-loading");
-    });
-  }
+  
 }
 
 
@@ -415,48 +329,7 @@ async function browse(fieldid) {
     //ffmpeg -i "Imagine Dragons - It's Time.mp3" "Imagine Dragons - It's Time.ogg"
 
     convbtn.classList.add("is-loading");
-    let spawn = require('child_process').spawn,
-      conv = spawn("python", [installer, dir,format]);
-    console.log(conv)
-
-    conv.stdout.on('data', function (data) {
-      console.log('stdout: ' + data.toString());
-      convouttext.textContent += data.toString() + "\n";
-    });
-
-    conv.stderr.on('data', function (data) {
-      console.log('stderr: ' + data.toString());
-      convouttext.textContent += data.toString() + "\n";
-    });
-
-    conv.on('exit', function (code) {
-      var excode = code.toString();
-      console.log('child process exited with code ' + excode);
-      convbtn.classList.remove("is-loading");
-      switch (parseInt(excode)) {
-        case 1:
-          console.log("Finished with error!");
-          convouttext.textContent += "Finished with errorcode: " + excode
-          break;
-
-        case 0:
-          console.log("No Errors");
-          convouttext.textContent += "Finished!"
-          break;
-        default:
-          console.log(excode);
-          break;
-      }
-    });
-
-    conv.on('error', function (err) {
-      console.log('Oh nyo?!?! You caused an ewwow!!11 pwease stop *looks at you* ' + err);
-      convouttext.textContent += err;
-      button.classList.remove("is-loading");
-  
-    });
-
-
+   
   }
 
 }

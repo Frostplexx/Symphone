@@ -1,6 +1,10 @@
-const { app, BrowserWindow } = require('electron');
+const { app, BrowserWindow, shell } = require('electron');
 const path = require('path');
-require('v8-compile-cache');
+
+const getToken = require("./getToken");
+
+const fs = require('fs');
+var settingsPath = path.join(__dirname, "settings.json").toString();
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) { // eslint-disable-line global-require
@@ -15,7 +19,7 @@ const createWindow = () => {
     icon:'icon.ico',
     transparent:true,
     frame: false,
-    resizable: false,
+    // resizable: false,
     webPreferences:{
       nodeIntegration: true,
       contextIsolation: false,
@@ -27,7 +31,7 @@ const createWindow = () => {
   mainWindow.loadFile(path.join(__dirname, 'index.html'));
   mainWindow.removeMenu();
   // Open the DevTools.
-  mainWindow.webContents.toggleDevTools();
+  mainWindow.webContents.openDevTools();
 };
 
 
@@ -61,4 +65,4 @@ app.on('activate', () => {
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and import them here.
 
-
+getToken.auothorizeSpotify();
