@@ -12,9 +12,14 @@
   --darkmode-secondcolor: white;
 }
 
+::-webkit-scrollbar {
+  display: none;
+}
+
 body{
   background-color: rgba(255, 255, 255, 0.6);
   -webkit-app-region: drag;
+  overscroll-behavior: contain;
 }
 
 button {
@@ -27,11 +32,12 @@ button {
 }
 
 #seldiv{
+  margin-top: 0.75rem;
   width: 22%;
-  margin-top: 4rem;
   margin-left: 0.75rem;
 }
 #leftmenu{
+  /* -webkit-user-select: none; */
   position: relative;
   font-weight: 500;
   font-size: 15px;
@@ -61,8 +67,23 @@ button {
 
 .maincont.is-active{
   display: block;
+  padding: 1rem;
 }
 
+#userprofilepic{
+  vertical-align: middle;
+  width:1.6rem;
+  height: 1.6rem;
+  margin-left: 0.75rem;
+}
+
+#username{
+  display: inline-block;
+  font-weight: 500;
+  font-size: 15px;
+  margin-top: 0.75rem;
+  margin-left: 0.3rem;
+}
 
 
 
@@ -2238,7 +2259,7 @@ a.tag:hover {
 /* Bulma Form */
 .input, .textarea, .select select {
   background-color: var(--darkmode-secondcolor);
-  border-color: var(--tab-hover-color);
+  border-color: var(--darkmode-text-color);
   border-radius: 4px;
   color: var(--darkmode-text-color); }
   .input::-moz-placeholder, .textarea::-moz-placeholder, .select select::-moz-placeholder {

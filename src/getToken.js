@@ -41,6 +41,7 @@ var spotifyApi = new SpotifyWebApi({
     redirectUri: 'http://localhost:8888/callback'
   });
   
+
 function auothorizeSpotify(){
     const app = express();
     var loggedIn = false;
@@ -100,6 +101,15 @@ function auothorizeSpotify(){
 
   return loggedIn;
 }
+
+
+setTimeout(() => { 
+  spotifyApi.getMe().then(res => {
+    console.log(res);
+  });
+
+}, 3000);
+
 
 
 function readSettings(setting) {

@@ -6,6 +6,7 @@ const getToken = require("./getToken");
 
 
 const { electron } = require('process');
+const { response } = require('express');
 var settingsPath = path.join(__dirname, "settings.json").toString();
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
@@ -23,7 +24,7 @@ const createWindow = () => {
 		resizable: false,
 		title: "Symphone",
 		autoHideMenuBar: true,
-		frame: false, // this is a requirement for transparent windows it seems
+		frame: true, // this is a requirement for transparent windows it seems
 		blur: true,
 		blurType: "blurbehind",
 		blurGnomeSigma: 1000,
@@ -48,7 +49,7 @@ const loginWindow = () => {
     height: 600,
     icon:'icon.ico',
     frame: false,
-    // resizable: false,
+    resizable: false,
     webPreferences:{
       nodeIntegration: true,
       contextIsolation: false,
@@ -61,11 +62,10 @@ const loginWindow = () => {
   setTimeout(() => { 
     console.log(login)
     if(login){
-        loginWin.close();
         createWindow();
+        loginWin.close();
       }
   }, 1000);
- 
 }
 
 

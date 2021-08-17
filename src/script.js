@@ -9,7 +9,7 @@ var settingsPath = path.join(__dirname, "settings.json").toString();
 var outtext = document.getElementById("outtext");
 var convouttext = document.getElementById("convouttext");
 
-
+const getToken = require("./getToken");
 
 process.env.SPOTIPY_CLIENT_SECRET = readSettings("clientsecret");
 process.env.SPOTIPY_CLIENT_ID = readSettings("clientid");
@@ -141,48 +141,9 @@ process.env.Path += ";"+ __dirname;
 }
 
 
-
-//tab handling
-let tabsWithContent = (function () {
-  let tabs = document.querySelectorAll('.tabs li');
-  let tabsContent = document.querySelectorAll('.tabcontent');
-
-  let deactvateAllTabs = function () {
-    tabs.forEach(function (tab) {
-      tab.classList.remove('is-active');
-    });
-  };
-
-  let hideTabsContent = function () {
-    tabsContent.forEach(function (tabContent) {
-      tabContent.classList.remove('is-active');
-    });
-  };
-
-  let activateTabsContent = function (tab) {
-    tabsContent[getIndex(tab)].classList.add('is-active');
-  };
-
-  let getIndex = function (el) {
-    return [...el.parentElement.children].indexOf(el);
-  };
-
-  tabs.forEach(function (tab) {
-    tab.addEventListener('click', function () {
-      deactvateAllTabs();
-      hideTabsContent();
-      tab.classList.add('is-active');
-      activateTabsContent(tab);
-    });
-  })
-
-  tabs[0].click();
-})();
-
-
 //settings menu handling
 function menuswitch(id, parent) {
-  let settings = document.querySelectorAll(".settingsContent");
+  let settings = document.querySelectorAll(".maincont");
   settings.forEach(function (setting) {
     setting.classList.remove("is-active");
   });
@@ -222,6 +183,8 @@ function download() {
 
   
 }
+
+
 
 //convert to mp3 button
 {

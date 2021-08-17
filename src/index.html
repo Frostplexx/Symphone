@@ -13,7 +13,11 @@
 </head>
 
 <body>
+  <span>
+    <img id="userprofilepic" src="https://i.imgur.com/IK2RMzi.png"/>
+    <div id="username"> Max Mustermann</div>
 
+  </span>  
   <div id="seldiv">
     <aside class="menu" id="leftmenu">
       <p class="menu-label">
@@ -71,10 +75,41 @@
   </div>
 
 
-  <div id="contentdiv" class="maincont">
+  <div id="contentdiv">
     
-    <div id="download" class="maincont">
-      Test
+    <div id="download" class="maincont is-active">
+
+    
+        <form class="block">
+          <div class="field">
+            <div class="control">
+              <input class="input is-small is-rounded" type="text" placeholder="open.spotify.com or youtube.com" id="urlfield">
+            </div>
+          </div>
+  
+          <div class="block">
+            <div class="field has-addons">
+              <div class="control  is-expanded">
+                <input class="input is-small is-rounded" type="text" placeholder="C:\Users\username\Downloads" id="dirfield">
+              </div>
+              <div class="control">
+                <a class="button is-info is-small is-rounded" onclick="browse('dirfield')">
+                  <span class="icon">
+                    <i class="fas fa-folder"></i>
+                  </span>
+                  <span>Browse</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </form>
+
+
+        <div class="block">
+          <label class="checkbox">
+            <input type="checkbox" id="convettomp3">
+            Convert to mp3
+          </label>
     </div>
     <div id="convert" class="maincont">
       Test2
