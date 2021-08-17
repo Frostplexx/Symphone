@@ -4,7 +4,7 @@ var path = require('path');
 const msg1 = document.getElementById('updatemsg');
 const msg2 = document.getElementById('updatemsgscnd');
 const upbtn = document.getElementById("upswitch");
-upbtn.addEventListener("change", checkUpdate);
+// upbtn.addEventListener("change", checkUpdate);
 
 
     if(Boolean(readSettings("autocheck") === "true") ){

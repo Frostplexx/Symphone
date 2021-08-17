@@ -10,18 +10,17 @@ const spotifyApi = new SpotifyWebApi();
 spotifyApi.setAccessToken(token);
 spotifyApi.setRefreshToken(refreshToken);
 
-
 //Youtube Search stuff
 const ytdl = require('ytdl-core');
 const youtube = require('scrape-youtube').default;
-
-
-
 
 //ffmpeg
 var ffmpeg = require('fluent-ffmpeg');
 var ffmpegstatic = require('ffmpeg-static-electron');
 ffmpeg.setFfmpegPath(ffmpegstatic.path);
+
+//html and other elements
+var button = document.getElementById('downloadBtn');
 
 module.exports = {
   downloadSongs
@@ -30,8 +29,11 @@ module.exports = {
 
 function downloadSongs(playlist, dir){
   // //get Playlist ID
+  button.classList.add("is-loading")
   let playlistID = playlist.split("playlist/")[1].split("?si=")[0];
-  getPlaylistTracks(playlistID, dir);
+  getPlaylistTracks(playlistID, dir).then(() => {
+    button.classList.remove("is-loading");
+  });
 }
 
 
@@ -65,22 +67,26 @@ async function getPlaylistTracks(playlistId, dir) {
     }
     //when the download finishes convert the file and delete the old one
     y.on("finish", function(){
-      ffmpeg(downpath)
-      .toFormat('mp3')
-      .on('error', (err) => {
-          console.log('An error occurred: ' + err.message);
-      })
-      .on('progress', (progress) => {
-          console.log('Processing: ' + progress.targetSize + ' KB converted');
-      })
-      .on('end', () => {
-          console.log('Processing finished !');
-          //delete old file
-          fs.unlinkSync(downpath);
-      })
-      .save(path.join(dir, `/r${track.name.replace("//", "")}.mp3`));//path where you want to save your file
+      if (readSettings("convetToMp3")) {
+        ffmpeg(downpath)
+        .toFormat('mp3')
+        .on('error', (err) => {
+            console.log('An error occurred: ' + err.message);
+        })
+        .on('progress', (progress) => {
+            console.log('Processing: ' + progress.targetSize + ' KB converted');
+        })
+        .on('end', () => {
+            console.log('Processing finished !');
+            //delete old file
+            fs.unlinkSync(downpath);
+        })
+        .save(path.join(dir, `/r${track.name.replace("//", "")}.mp3`));//path where you want to save your file
+      }
     });
     });
+
+    console.log("Finshed Downloading")
    
   }
   return tracks;

@@ -1,10 +1,10 @@
 const { app, BrowserWindow, shell } = require('electron');
+const glasstron = require('glasstron');
 const path = require('path');
 
 const getToken = require("./getToken");
 
-const fs = require('fs');
-const { time } = require('console');
+
 const { electron } = require('process');
 var settingsPath = path.join(__dirname, "settings.json").toString();
 
@@ -15,25 +15,30 @@ if (require('electron-squirrel-startup')) { // eslint-disable-line global-requir
 
 const createWindow = () => {
   // Create the browser window.
-  const mainWindow = new BrowserWindow({
+  const mainWindow = new glasstron.BrowserWindow({
     width: 900,
     height: 600,
     icon:'icon.ico',
-    transparent:true,
-    frame: false,
-    // resizable: false,
+    backgroundColor: "#00000000",
+		resizable: false,
+		title: "Symphone",
+		autoHideMenuBar: true,
+		frame: false, // this is a requirement for transparent windows it seems
+		blur: true,
+		blurType: "blurbehind",
+		blurGnomeSigma: 1000,
+		blurCornerRadius: 20,
+		vibrancy: "fullscreen-ui",
+    titleBarStyle: 'hiddenInset',
     webPreferences:{
       nodeIntegration: true,
       contextIsolation: false,
-      enableRemoteModule: true,
-      experimentalFeatures: true,
     }
   });
   // and load the index.html of the app.
   mainWindow.loadFile(path.join(__dirname, 'index.html'));
-  mainWindow.removeMenu();
   // Open the DevTools.
-  mainWindow.webContents.openDevTools();
+  // mainWindow.webContents.openDevTools();
 };
 
 const loginWindow = () => {
@@ -59,7 +64,7 @@ const loginWindow = () => {
         loginWin.close();
         createWindow();
       }
-  }, 0000);
+  }, 1000);
  
 }
 
@@ -69,6 +74,7 @@ const loginWindow = () => {
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
+app.commandLine.appendSwitch("enable-transparent-visuals");
 app.on('ready', () => {
   loginWindow();
 });

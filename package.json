@@ -53,6 +53,7 @@
     "express": "^4.17.1",
     "ffmpeg-static-electron": "^2.0.3",
     "fluent-ffmpeg": "^2.1.2",
+    "glasstron": "^0.1.0",
     "request": "^2.88.2",
     "scrape-youtube": "^2.1.9",
     "spotify-web-api-node": "^5.0.2",

@@ -1,10 +1,11 @@
 {
   "clientid": "179baf2322124fa3ad9cf70cc82ed8b2",
   "clientsecret": "0073bded3bae40a882cf5065c6091f08",
-  "access_token": "BQAGnOFJkVvhLwfAxB-XDg36Kgfg-R4liO1x5edGFcP4oiOXv9Q1l4OuZ0WwiOEARmAhCiw5VRPTOHYyUV93I98iFfRc3Vc5Vis7XBGUkX20ydTSUgvslt-unTWZxmP18l8dhVWKeuXupM1vyrW0iPeGszPDmoxxj0KbT4vqFSA94GtT605qcnohc2q8lrZMDl9hrUoEfNO7HMRFFhrQdeL_Du375suRjXjgp4OI1gUpZLlCmhFmkaHGm_d1uOJ4oPiq1f71CBlKg1yZJUr3zYwNzsStZIUDzRc",
-  "refresh_token": "AQDMne83R29vXW5LshXYiR7CrjRJuz8TN7xNvqr8laMFfj-GPiA9oyLeA9EPxPfIe6EQ1YoFu-QMSCWzgBUDeHu2HlI3Ylz1Y8sMI62QTkc0MeBmeblUFHXitl5rN_Zm-4U",
+  "access_token": "BQC8np6kfddx9TrX-b-JX7LU3-HElRGKqbBr44N2qskD94EYtH_ItqHmOG0oKEL48qKHvD4gAAAPU3cNz9EWUU_iX-kaSAJbauMayAum6WFvJ4c9QvqEfQqgRtpTf1Sr4F-pEh2YAISZtEtwcd9ZHWZ4fk7begrdguvcERJUZGZk3MODJ20skwbQ-Zt98TKPsjSz5rPlOg71vdQyqxjf4VG7IyNCeN3FRjinNuszWVhPBpFuSimtkK6ucWiyZVa2NxInvvJaysbC7jxKy7ESx0vFbKBalpC9yas",
+  "refresh_token": "AQAT1lpkKcPq7iLsEZ5ONtkWjSvUO61zCjBsx9oge_ynfqoGYIH6O8bpbawsoRTVNJwn4J66bWSjlgvH9eARs5hmcF2qaMNtMLuYd5w7fvcADQa5BL7nolbYraKM_d-eL10",
   "accentcolor": "#058eee",
-  "darkmode": false,
+  "darkmode": true,
   "autocheck": false,
-  "devmode": "false"
+  "devmode": "false",
+  "convetToMp3": true
 }

@@ -8,7 +8,7 @@ var settingsPath = path.join(__dirname, "settings.json").toString();
 //"spotify_dl -l " + val +" -o C:\\Users\\danie\\Music"
 var outtext = document.getElementById("outtext");
 var convouttext = document.getElementById("convouttext");
-var button = document.getElementById('downloadBtn');
+
 
 
 process.env.SPOTIPY_CLIENT_SECRET = readSettings("clientsecret");
@@ -218,11 +218,19 @@ function download() {
   // console.log(source);
   outtext.textContent = " "; 
   // console.log(url);
-  button.classList.add("is-loading")
+
 
   
 }
 
+//convert to mp3 button
+{
+  let btn = document.querySelector("#convettomp3");
+  btn.checked = readSettings("convetToMp3");
+  btn.addEventListener("click", () => {
+    writeSettings("convetToMp3", btn.checked)
+  })
+}
 
 
 //clear output button

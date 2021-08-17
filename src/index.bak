@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Symphone</title>
+  <!-- <link rel="stylesheet" type="text/css" href="../node_modules/bulma/css/bulma.css"> -->
+  <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+  <link rel="stylesheet" href="../css/index.css">
+  <link rel="stylesheet" href="../css/mystyles.css">
+  <script defer src="script.js"></script>
+  <script defer src="./scripts/updater.js"></script>
+</head>
+
+<body>
+  
+  <div id="splash" class="is-active">
+    <div id="symphonelogo">
+      <img src="https://i.imgur.com/YnyXUTL.png" alt="Symphone Logo" >
+    </div>
+  </div>
+
+  <div id="title-bar">
+    <div id="title">
+        <span style="vertical-align: middle;">
+            <img src="https://i.imgur.com/jRX2Ef5.png" style="width:17px;height:17px;"/>
+        </span>
+        <span id="titletext">Symphone</span>
+    </div>
+
+    <div id="title-bar-btns">
+      <button id="min-btn">
+        <span id ="min">&#69707</span>
+      </button>
+      <button id="close-btn">
+        <span id ="close">&#x2715</span>
+      </div></button>
+
+      </button>
+    </div>
+</div>
+
+
+<div id="maindiv">
+  <div class="tabs is-centered" id="tabs">
+    <ul>
+      <li class="tablinks is-active">
+        <a>
+          <span class="icon is-small"><i class="fas fa-download" aria-hidden="true"></i></span>
+          <span>Download</span>
+        </a>
+      </li>
+      <li class="tablinks">
+        <a>
+          <span class="icon is-small"><i class="fas fa-exchange-alt" aria-hidden="true"></i></span>
+          <span>Convert</span>
+        </a>
+      </li>
+      <li class="tablinks">
+        <a>
+          <span class="icon is-small"><i class="fas fa-cog" aria-hidden="true"></i></span>
+          <span>Settings</span>
+        </a>
+      </li>
+    </ul>
+  </div>
+
+  <section id="download" class="tabcontent">
+
+
+
+    <div class="title">
+      Download Songs
+    </div>
+    <div id="mainbody">
+      <form class="block">
+        <div class="field">
+          <label class="label">URL</label>
+          <div class="control">
+            <input class="input" type="text" placeholder="open.spotify.com or youtube.com" id="urlfield">
+          </div>
+        </div>
+
+        <div class="block">
+          <label class="label">Directory</label>
+          <div class="field has-addons">
+            <div class="control  is-expanded">
+              <input class="input" type="text" placeholder="C:\Users\username\Downloads" id="dirfield">
+            </div>
+            <div class="control">
+              <a class="button is-info" onclick="browse('dirfield')">
+                <span class="icon">
+                  <i class="fas fa-folder"></i>
+                </span>
+                <span>Browse</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </form>
+      <div class="block">
+        <label class="checkbox">
+          <input type="checkbox" id="convettomp3">
+          Convert to mp3
+        </label>
+
+      </div>
+      <div class="block">
+        <button id="downloadBtn" class="button is-primary" onclick=download() disabled>
+          <span class="icon">
+            <i class="fas fa-download"></i>
+          </span>
+          <span>Download</span>
+        </button>
+      </div>
+
+     
+
+    <div id="outermsg">
+      <div class="notification inner is-danger" id="msg">
+        <strong>Spotify Client Secret and ID not found!
+        </strong> You can go to <strong>https://developer.spotify.com/dashboard</strong> 
+        and create a new App. Afterwards go to the Symphone Settings and paste the Client Secret 
+        and ID under the Authentication Tab.
+      </div>
+      <div class="notification inner is-info" id="updatemsg">
+        <button class="delete"></button>
+        <div class="block">
+          A new version is aviable! 
+          Do you want to update?
+        </div>
+        <div class="block">
+          <button id="updateBtn" class="button " onclick=downloadnewVer()>
+            <span class="icon">
+              <i class="fas fa-upload"></i>
+            </span>
+            <span>Update</span>
+          </button>
+          <div class="block">
+            <progress class="progress is-small is-success" value="0" max="100" id="updateprogress"></progress>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+
+  </section>
+
+  <section id="convert" class="tabcontent">
+    <div class="box p-0" id="output">
+      <div class="block">
+        <button id="clearBtn" class="button" onclick=clsmsg()>
+          <span class="icon">
+            <i class="fas fa-trash" id="clearicon"></i>
+          </span>
+        </button>
+      </div>
+      <section class="section p-1">
+        <h5 class="title is-4 pl-2">
+          <span>Output:</span>
+        </h5>
+        <div class="container p-1">
+          <div class="notification p-2" id="convouttext">
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <div class="title">
+      Convert Songs
+    </div>
+    <div id="mainbody">
+      <form class="block">
+        <label class="label">Directory</label>
+        <div class="field has-addons" id="convertfield">
+          <div class="control  is-expanded">
+            <input class="input" type="text" placeholder="C:\Users\username\Downloads" id="convertdir">
+          </div>
+          <div class="control">
+            <a class="button is-info" onclick="browse('convertdir')">
+              <span class="icon">
+                <i class="fas fa-folder"></i>
+              </span>
+              <span>Browse</span>
+            </a>
+          </div>
+        </div>
+      </form>
+
+
+      <div class="block">
+        <button id="convertBtn" class="button is-primary" onclick=convert() disabled>
+          <span class="icon">
+            <i class="fas fa-exchange-alt" aria-hidden="true"></i>
+          </span>
+          <span>Convert</span>
+        </button>
+      </div>
+
+      <div class="dropdown">
+        <div class="dropdown-trigger">
+          <button class="button" aria-haspopup="true" aria-controls="convertdorpdown">
+            <span id="convertsel">Format</span>
+            <span class="icon is-small">
+              <i class="fas fa-angle-down" aria-hidden="true"></i>
+            </span>
+          </button>
+        </div>
+
+        <div class="dropdown-menu" id="convertdorpdown" role="menu">
+          <div class="dropdown-content">
+            <a href="#" class="dropdown-item" onclick="dropdownsel('.mp3', 'convertsel')">
+              .mp3
+            </a>
+            <a href="#" class="dropdown-item" onclick="dropdownsel('.ogg', 'convertsel')">
+              .ogg
+            </a>
+            <a href="#" class="dropdown-item" onclick="dropdownsel('.wav', 'convertsel')">
+              .wav
+            </a>
+            <a href="#" class="dropdown-item" onclick="dropdownsel('.aac', 'convertsel')">
+              .aac
+            </a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </section>
+
+
+
+  <section id="settings" class="tabcontent">
+
+    <aside class="menu" id="settingsmenu">
+      <p class="menu-label">
+        General
+      </p>
+      <ul class="menu-list">
+        <li><a onclick="menuswitch('auth', this)" class="is-active">Authentication</a></li>
+        <li><a onclick="menuswitch('python', this);selfcheck();">Dependencies</a></li>
+        <li><a onclick="menuswitch('theme', this)">Theme</a></li>
+        <li><a onclick="menuswitch('updates', this)">Updates</a></li>
+      </ul>
+      <p class="menu-label">
+        Other
+      </p>
+      <ul class="menu-list">
+        <li><a onclick="menuswitch('help', this)">Help</a></li>
+        <li><a onclick="menuswitch('about', this)">About</a></li>
+    </aside>
+
+
+
+    <div id="settingsContainer">
+
+      <section id="updates" class="settingsContent">
+        <div class="block">
+          <h1 class="title is-5">
+            <i class="fas fa-upload"></i>
+            Updates
+          </h1>
+        </div>
+        <div class="block">
+          <div class="block">
+            <button class="button is-primary" onclick="checkUpdate()" id="manbtn">
+              <span class="icon">
+                <i class="fas fa-sync-alt"></i>
+              </span>
+              <span>Check Manually</span>
+            </button>
+          </div>
+          <div class="blockk">
+            <label id="darklabel">Check for Updates on Startup:</label>
+            <label class="switch">
+              <input type="checkbox" id="upswitch">
+              <span class="slider round"></span>
+            </label>
+          </div>
+          <div class="notification inner is-info" id="updatemsgscnd">
+            <div class="block">
+              A new version is aviable! 
+              Do you want to update?
+            </div>
+            <div class="block">
+              <button id="updateBtn" class="button " onclick=downloadnewVer()>
+                <span class="icon">
+                  <i class="fas fa-upload"></i>
+                </span>
+                <span>Update</span>
+              </button>
+              <div class="block">
+                <progress class="progress is-small is-success" value="0" max="100" id="updateprogress"></progress>
+              </div>
+            </div>
+
+        </div>
+      </section>
+
+
+      <section id="auth" class="settingsContent is-active">
+        <h1 class="title is-5">
+          <i class="fas fa-id-card-alt"></i>
+          Authentication
+        </h1>
+        <div class="block">
+          <div class="field">
+            <label class="label">Spotify Client ID</label>
+            <div class="control">
+              <input class="input" type="text" placeholder="e.g. 3a60418d01b152397014de098906c86a" id="clientid">
+            </div>
+          </div>
+          <div class="block">
+            <div class="field ">
+              <label class="label">Spotify Client Secret</label>
+              <div class="control">
+                <input class="input" type="text" placeholder="e.g. dcae157d6054bb354c5dc96edafa8fb4" id="clientsecret">
+              </div>
+            </div>
+
+      </section>
+
+
+      <section id="python" class="settingsContent">
+        <h1 class="title is-5">
+          <i class="fas fa-file-code"></i>
+          Dependencies
+        </h1>
+
+        <div class="box">
+          <span style="text-decoration: underline;">Python:</span>
+          <span id="pythoncheck"></span>
+        </div>
+        <div class="box">
+          <span style="text-decoration: underline;">Pip:</span>
+          <span id="pipcheck"></span>
+        </div>
+
+
+        <div class="box">
+         <span style="text-decoration: underline;"> spotify_dl:</span>
+          <span id="spotifycheck"></span>
+          <button id="downSpotifyBtn" class="button is-primary" onclick=downloadspotify() disabled>
+            <span class="icon">
+              <i class="fas fa-download" aria-hidden="true"></i>
+            </span>
+          </button>
+          <button id="delSpotifyBtn" class="button is-danger" onclick=deletespotify() disabled>
+            <span class="icon">
+              <i class="fas fa-trash" id="clearicon"></i>
+            </span>
+          </button>
+        </div>
+        <div class="box">
+          <span style="text-decoration: underline;">youtube_dl:</span> 
+          <span id="youtubecheck"></span>
+            <button id="downYoutubeBtn" class="button is-primary" onclick=downloadyoutube() disabled>
+              <span class="icon">
+                <i class="fas fa-download" aria-hidden="true"></i>
+              </span>
+            </button>
+          <button id="delYoutubeBtn" class="button is-danger" onclick=deleteyoutube() disabled>
+            <span class="icon">
+              <i class="fas fa-trash" id="clearicon"></i>
+            </span>
+          </button>
+        </div>
+        <div id="pyprogress" class="is-active">
+          <progress class="progress is-small is-primary" max="100"></progress>
+        </div>
+      </section>
+
+
+
+      <section id="theme" class="settingsContent">
+
+        <div class="block" id="accentblock">
+          <h1 class="title is-5">
+            <i class="fas fa-swatchbook"></i>
+            Accent Color
+          </h1>
+
+          <!--Pick a Color:-->
+          <input type="color" id="accentcolor" name="Accent Color" value="#058eee">
+          <button id="accentclrBtn" class="button" onclick="accentReset()">
+            <span class="icon">
+              <i class="fas fa-history"></i>
+            </span>
+        </div>
+
+
+        <div class="block" id="darkmodeblock">
+          <h1 class="title is-5">
+            <i class="fas fa-adjust"></i>
+            Dark Mode
+          </h1>
+          <label id="darklabel">Toggle Dark Mode:</label>
+          <label class="switch">
+            <input type="checkbox" id="darkswitch">
+            <span class="slider round"></span>
+          </label>
+        </div>
+
+
+        <div class="box" id="examplebox">
+          <button class="button is-primary" id="examplebtn">
+            <span>Example Button</span>
+          </button>
+          <div class="notification is-primary" id=examplenotif>
+            <button class="delete"></button>
+            Primar lorem ipsum dolor sit amet, consectetur
+            adipiscing elit lorem ipsum <strong>dolor</strong>.
+          </div>
+        </div>
+
+      </section>
+
+      <section id="help" class="settingsContent">
+        <div class="block">
+          <h1 class="title is-5">
+            <i class="fas fa-question-circle"></i>
+            Help
+          </h1>
+        </div>
+        <div class="block">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
+          magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+          consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+          pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id
+          est
+          laborum.
+        </div>
+      </section>
+
+      <section id="about" class="settingsContent">
+        <h1 class="title is-5">
+          <i class="fas fa-book-open"></i>
+          About
+        </h1>
+        Made with Electron and a lot of
+        <i class="fas fa-heart"></i>
+        by Daniel Inama.
+        More Infos can be found on my <a href="https://github.com/Frostplexx/SpotifyDL_GUI">GitHub Page</a>.
+        If you don't know what you are doing, please go to the help tab.
+      </section>
+
+    </div>
+
+  </section>
+</div>
+
+</body>
+
+</html>
