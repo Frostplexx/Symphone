@@ -6,6 +6,8 @@ const getToken = require("./getToken");
 
 var settingsPath = path.join(__dirname, "settings.json").toString();
 
+var blur = true
+var frame = true
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) { // eslint-disable-line global-require
   app.quit();
@@ -13,16 +15,20 @@ if (require('electron-squirrel-startup')) { // eslint-disable-line global-requir
 
 const createWindow = () => {
   // Create the browser window.
+  if(process.platform === 'win32') {
+    blur = false
+    frame = false
+  }
   const mainWindow = new glasstron.BrowserWindow({
     width: 900,
     height: 600,
     icon:'icon.ico',
-    backgroundColor: "#00000000",
+    backgroundColor: "#FFFFFFFF",
 		resizable: false,
 		title: "Symphone",
 		autoHideMenuBar: true,
-		frame: true, // this is a requirement for transparent windows it seems
-		blur: true,
+		frame: frame, // this is a requirement for transparent windows it seems
+		blur: blur,
 		blurType: "blurbehind",
 		blurGnomeSigma: 1000,
 		blurCornerRadius: 20,
