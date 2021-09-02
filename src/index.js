@@ -8,6 +8,7 @@ var settingsPath = path.join(__dirname, "settings.json").toString();
 
 var blur = true
 var frame = true
+var color = "#00000000"
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) { // eslint-disable-line global-require
   app.quit();
@@ -18,12 +19,14 @@ const createWindow = () => {
   if(process.platform === 'win32') {
     blur = false
     frame = false
+    color = "#FFFFFFFF"
+    console.log("this is windows")
   }
   const mainWindow = new glasstron.BrowserWindow({
     width: 900,
     height: 600,
     icon:'icon.ico',
-    backgroundColor: "#FFFFFFFF",
+    backgroundColor: color,
 		resizable: false,
 		title: "Symphone",
 		autoHideMenuBar: true,
