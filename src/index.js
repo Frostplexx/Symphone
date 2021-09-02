@@ -4,9 +4,6 @@ const path = require('path');
 
 const getToken = require("./getToken");
 
-
-const { electron } = require('process');
-const { response } = require('express');
 var settingsPath = path.join(__dirname, "settings.json").toString();
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
@@ -34,6 +31,7 @@ const createWindow = () => {
     webPreferences:{
       nodeIntegration: true,
       contextIsolation: false,
+      enableRemoteModule: true,
     }
   });
   // and load the index.html of the app.
@@ -41,6 +39,7 @@ const createWindow = () => {
   // Open the DevTools.
   // mainWindow.webContents.openDevTools();
 };
+
 
 const loginWindow = () => {
 
@@ -98,3 +97,25 @@ app.on('activate', () => {
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and import them here.
+
+
+//TODO
+// - add profile page
+// - add settings 
+// - add back convert functionality
+// - add playlist page 
+// - finish download page
+    // - fetch more than 100 song from spotify
+    // - some errorhandling, otherwise the download gets stuck
+// - make everything faster 
+// - fix login windoww --> first time the app is added
+// - fix windows uglieness
+
+
+//being worked on
+  // - add more options functionality 
+
+
+//done
+  // - youtbe url and other search 
+  // - track how many songs have to be downloaded and have been downloaded 

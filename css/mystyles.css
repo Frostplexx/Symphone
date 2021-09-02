@@ -2,14 +2,13 @@
 /* Bulma Utilities */
 
 :root{
-  --accent-color: rgba(0, 102, 255, 1);
+  --accent-color: 0, 102, 255;
   --itemclicked-color : rgba(0, 0, 0, 0.1);
   --text-color: #f7f7f7;
   --darkmode-text-color: #4b4b4b;
   --background-color: #ffffff;
   --hover-color: rgba(0, 102, 255, 0.1);
-  --tab-hover-color: white;
-  --darkmode-secondcolor: white;
+  --darkmode-reverse-color: rgb(46, 46, 46);
 }
 
 ::-webkit-scrollbar {
@@ -24,6 +23,21 @@ body{
 
 button {
   -webkit-app-region: no-drag;
+}
+
+.loader {
+  border: 16px solid var(--darkmode-reverse-color); /* Light grey */
+  border-top: 16px solid #3498db; /* Blue */
+  opacity: 100%;
+  border-radius: 50%;
+  width: 120px;
+  height: 120px;
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 
 .titlebar {
@@ -72,26 +86,325 @@ button {
 
 #userprofilepic{
   vertical-align: middle;
-  width:1.6rem;
-  height: 1.6rem;
-  margin-left: 0.75rem;
+  width:1.8rem;
+  height: 1.8rem;
+  margin-left: 1rem;
+  border-radius: 25%;
 }
 
 #username{
   display: inline-block;
-  font-weight: 500;
+  font-weight: 600;
   font-size: 15px;
-  margin-top: 0.75rem;
+  margin-top: 3rem;
   margin-left: 0.3rem;
+}
+
+#urlfield{
+  position: absolute;
+  left: 50%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  top: 6.5rem;
+  padding-top: 1.2rem;
+  padding-bottom: 1.2rem;
+  padding-right: 2.2rem;
+  padding-left: 2.2rem;
+  border-width: 1px;
+  border-color: rgba(0, 0, 0, 0.4);
+  font-weight: 500;
+  width: 65%;
+  -webkit-box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.3); 
+  box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.3);
+  transition: cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.25s;
+}
+
+#loadingbar{
+  display: none;
+  position: absolute;
+  -webkit-box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.3); 
+  box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.3);
+  top: 84%;
+  left: 50%;
+  width: 95%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+
+}
+
+#currentdownloadedsong{
+  display: none;
+  position: absolute;
+  top: 81%;
+  left: 21%;
+  width: 250px;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  opacity: 40%;
+  font-size: 13px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: left;
+}
+
+#timeestimate{
+  display: none;
+  position: absolute;
+  top: 81%;
+  left: 75%;
+  width: 300px;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  opacity: 40%;
+  font-size: 13px;
+  text-align: right;
+}
+
+#moreoptions{
+  position: absolute;
+  top: 55%;
+  left: 59.5%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  transition: cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.15s;
+}
+
+#downbtn{
+  position: absolute;
+  top: 55%;
+  left: 72%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  transition: cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.15s;
 }
 
 
 
+
+#dirbtn{
+  position: absolute;
+  top: 55%;
+  left: 30%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  transition: cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.15s;
+}
+
+#directory{
+  position: absolute;
+  text-align: center;
+  opacity: 40%;
+  font-size: small;
+  top: 68.5%;
+  left: 15%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  transition: ease-out 0.1s;
+}
+
+
+
+#cover{
+  position: relative;
+  height: 150px;
+  width: 150px;
+  border-radius: 5%;
+  object-fit: cover;
+  /* box-shadow: 0px 0px 2px 0.5px rgba(0, 0, 0, 0.5); */
+}
+
+#title{
+  position: absolute;
+  margin-top: auto;
+  left: 27%;
+  float: inline-start;
+  font-weight: 600;
+  font-size: 23px;
+  max-width:400px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+#author{
+  position: absolute;
+  left: 27%;
+  float: inline-start;
+  margin-top: 1.75rem;
+}
+
+#songam{
+  position: absolute;
+  left: 27%;
+  float: inline-start;
+  margin-top: 3rem;
+  font-size: small;
+}
+
+/* #placeholder{
+  height: 130px;
+  width: 130px;
+  position: absolute;
+  top: 36%;
+  left: 50%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  filter: grayscale(100%) brightness(0.8);
+  opacity: 15%;
+} */
+
+#placeholder{
+  position: absolute;
+  top: 35%;
+  left: 50%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  filter: grayscale(100%) brightness(0.8);
+  opacity: 15%;
+  white-space: pre-line;
+  font-weight: 500;
+  font-size: 15px;
+}
+
+#musicbox{
+  animation-name: fadeOut;
+  animation-duration: 0.5s;
+  display: none;
+}
+
+
+#musicbox.is-active{
+  display: block;
+  animation-name: fadeIn;
+  animation-duration: 0.2s;
+}
+
+@keyframes fadeIn{
+  from {opacity: 0%;}
+  to {opacity: 100%;}
+}
+
+@keyframes fadeOut{
+  from {opacity: 100%;}
+  to {opacity: 0%;}
+}
+
+
+#spoticn{
+  float: right;
+  font-size: 30px;
+  margin-top: -0.5rem;
+  color: rgb(0, 0, 0);
+}
+
+#searchloader {
+  display: none;
+  position: absolute;
+  top: 7rem;
+  left: 77%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+
+#searchloader.is-active {
+  display: block;
+}
+
+#moreoptionsbox{
+  display: none;
+  position: absolute;
+  padding-top: 0.5rem;
+  padding-left: 0.35rem;
+  padding-right: 0.35rem;
+  top: 75.5%;
+  left: 64%;
+  width: 200px;
+  height: 100px;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  font-size: 14px;
+}
+
+#moreoptionsbox.is-active{
+  display: block;
+}
 
 
 
 
 /* -------------------- Beginning of generated CSS ---------------------- */
+
+/* The switch - the box around the slider */
+.switch {
+  margin-top: 4px;
+  margin-bottom: 4px;
+  margin-right: 1px;
+  margin-left: 1px;
+  position: relative;
+  display: inline-block;
+  width: 35px;
+  height: 20px;
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* The slider */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 16px;
+  width: 16px;
+  left: 2px;
+  bottom: 2px;
+  background-color: white;
+  transition: .2s;
+}
+
+input:checked + .slider {
+  background-color: #2196F3;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(15px);
+  -ms-transform: translateX(15px);
+  transform: translateX(15px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
+
+
+
+
 
 
 

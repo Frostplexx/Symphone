@@ -1,12 +1,10 @@
 var SpotifyWebApi = require('spotify-web-api-node');
 const express = require('express')
-
-const fs = require('fs');
+var fs = require('fs')
 var path = require('path');
 var settingsPath = path.join(__dirname, "settings.json").toString();
 
 module.exports = {
-  spotifyApi,
   auothorizeSpotify
 }
 
@@ -35,12 +33,11 @@ const scopes = [
   ];
   
 // credentials are optional
-var spotifyApi = new SpotifyWebApi({
+const spotifyApi = new SpotifyWebApi({
     clientId: '179baf2322124fa3ad9cf70cc82ed8b2',
     clientSecret: '0073bded3bae40a882cf5065c6091f08',
     redirectUri: 'http://localhost:8888/callback'
   });
-  
 
 function auothorizeSpotify(){
     const app = express();
@@ -98,25 +95,16 @@ function auothorizeSpotify(){
     'HTTP Server up. Now go to http://localhost:8888/login in your browser.'
   )
 );
-
+setTimeout(() => { 
+  spotifyApi.getMe().then(res => {
+    writeSettings("profilepic", res.body["images"][0]["url"])
+    writeSettings("username", res.body["display_name"])
+    // username = res.body["display_name"]
+  });
+}, 1000);
   return loggedIn;
 }
 
-
-setTimeout(() => { 
-  spotifyApi.getMe().then(res => {
-    console.log(res);
-  });
-
-}, 3000);
-
-
-
-function readSettings(setting) {
-  let rawdata = fs.readFileSync(path.join(__dirname, "settings.json"));
-  let settings = JSON.parse(rawdata);
-  return settings[setting];
-}
 
 function writeSettings(name, value) {
   const fileName = settingsPath;
@@ -124,8 +112,5 @@ function writeSettings(name, value) {
   file[name] = value;
   fs.writeFileSync(fileName, JSON.stringify(file, null, 2));
 }
-
-
-
 
 

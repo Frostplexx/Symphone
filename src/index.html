@@ -8,7 +8,7 @@
   <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
   <link rel="stylesheet" href="../css/mystyles.css">
   <script defer src="script.js"></script>
-
+  <script defer src="getToken.js"></script>
 
 </head>
 
@@ -78,38 +78,86 @@
   <div id="contentdiv">
     
     <div id="download" class="maincont is-active">
-
-    
         <form class="block">
           <div class="field">
-            <div class="control">
-              <input class="input is-small is-rounded" type="text" placeholder="open.spotify.com or youtube.com" id="urlfield">
-            </div>
-          </div>
-  
-          <div class="block">
-            <div class="field has-addons">
-              <div class="control  is-expanded">
-                <input class="input is-small is-rounded" type="text" placeholder="C:\Users\username\Downloads" id="dirfield">
-              </div>
-              <div class="control">
-                <a class="button is-info is-small is-rounded" onclick="browse('dirfield')">
-                  <span class="icon">
-                    <i class="fas fa-folder"></i>
-                  </span>
-                  <span>Browse</span>
-                </a>
-              </div>
-            </div>
+            <p class="control">
+              <input class="input has-text-centered" type="text" placeholder="&#128269 Enter URL or Search" id="urlfield">
+              <div class="loader" id="searchloader"></div>
+            </p>
           </div>
         </form>
+      
+      <div class="box" style="margin-top: 8.5rem; padding: 1rem;"  id="musicbox">
+        <h1 id="title">Never gonna give you Up</h1>
+        <h3 id="author">By Rick Astley</h3>
+        <img id="cover" src="https://via.placeholder.com/640"/>
+        <span >
+          <i id="spoticn" class="fab"></i>
+        </span>
+      </div>
+      <span id="placeholder">
+        You can download from:
+        Spotify or Youtube
+        By entering your Playlist link or by searching for a song
+      </span>
+      <!-- <img id="placeholder" src="https://i.imgur.com/YnyXUTL.png"/> -->
 
+      <div>
+        <button class="button is-primary is-centered" id="dirbtn" disabled onclick="browse('directory')">
+          <span class="icon">
+            <i class="fas fa-folder-open"></i>
+          </span>
+          <span>
+            Choose Folder
+          </span>
+        </button>
+        <div id="directory"></div>
+        <button class="button is-primary is-centered" id="moreoptions" disabled onclick="moreoptionsHanlder()">
+          <span class="icon">
+            <i class="fas fa-cog"></i>
+          </span>
+        </button>
+        <div class="box" id="moreoptionsbox">
+          <div>
+            <label class="switch">
+              <input type="checkbox" id="converttomp3">
+              <span class="slider round"></span>
+            </label>
+            <span>
+              Convert video to mp3
+            </span>
+          </div>
 
-        <div class="block">
-          <label class="checkbox">
-            <input type="checkbox" id="convettomp3">
-            Convert to mp3
-          </label>
+          <div>
+            <label class="switch">
+              <input type="checkbox" id="saveinnewfolder">
+              <span class="slider round"></span>
+            </label>
+            <span>
+              Save in new folder
+            </span>
+          </div>
+
+        </div>
+      </div>
+
+      <button class="button is-primary is-centered " id="downbtn" disabled onclick="download()">
+        <span class="icon">
+          <i class="fas fa-arrow-down"></i>
+        </span>
+        <span>
+          Download
+        </span>
+      </button>
+      
+      <span id="currentdownloadedsong">
+        Loading...
+      </span>
+      <span id="timeestimate">
+        (0MB/0MB) | Time left: 0.00 Minutes
+      </span>
+      <progress class="progress is-primary is-small" value="0" max="0" id="loadingbar"></progress>
+        
     </div>
     <div id="convert" class="maincont">
       Test2

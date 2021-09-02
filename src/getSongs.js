@@ -1,5 +1,6 @@
 const fs = require('fs')
 var path = require('path');
+const readline = require('readline');
 
 
 //Spotify API stuff
@@ -20,84 +21,180 @@ var ffmpegstatic = require('ffmpeg-static-electron');
 ffmpeg.setFfmpegPath(ffmpegstatic.path);
 
 //html and other elements
-var button = document.getElementById('downloadBtn');
-
+var currentsongui = document.getElementById("currentdownloadedsong")
+var loadingbar = document.getElementById("loadingbar")
+let timeestimate = document.getElementById("timeestimate");
+var downpath = ""
+var starttime = ""
 module.exports = {
   downloadSongs
 }
 
-
 function downloadSongs(playlist, dir){
   // //get Playlist ID
-  button.classList.add("is-loading")
-  let playlistID = playlist.split("playlist/")[1].split("?si=")[0];
-  getPlaylistTracks(playlistID, dir).then(() => {
-    button.classList.remove("is-loading");
-  });
+  document.getElementById("downbtn").classList.add("is-loading")
+  if (playlist.includes("open.spotify")) {
+    let playlistID = playlist.split("playlist/")[1].split("?si=")[0];
+    getPlaylistTracks(playlistID, dir)
+  } else {
+    downloadYoutube(playlist, dir)
+  }
+}
+
+
+//download songs from spotify playlist
+async function getPlaylistTracks(playlistId, dir) {
+  const data = await spotifyApi.getPlaylistTracks(playlistId, {
+    offset: 0,
+    fields: 'items'
+  })
+  let tracks = [];
+  let stream = "";
+  for (let track_obj of data.body.items) {
+    const track = track_obj.track
+    tracks.push(track.artists[0].name + " - " + track.name)
+  }
+  let conv = readSettings("convetToMp3");
+  loadingbar.style.display = "block"
+  currentsongui.style.display = "block";
+  timeestimate.style.display = "block"
+  loadingbar.value = 0;
+  for (const song of tracks) {
+    console.log("I am at start of loop")
+    let firstvid = await youtube.search(song).then((results) => {
+      // Unless you specify a type, it will only return 'video' results
+      let videos = results.videos;
+      // console.log(videos[0].title) 
+      return videos[0].id;
+    })
+    let title = song
+    .replaceAll("(","")
+    .replaceAll(")", "")
+    .replaceAll("Official", "")
+    .replaceAll("Video", "")
+    .replaceAll("Remastered","")
+    .replaceAll("[","")
+    .replaceAll("]","")
+    .replaceAll("lyrics","")
+    .replaceAll("with","")
+    .replaceAll("//", "")
+    .replaceAll("/","")
+    .trim()
+    if(conv){
+      downpath = path.join(dir, `/${title}.mp3`)
+      stream = ytdl(firstvid, {
+        quality: 'highestaudio',
+      });
+    } else {
+      downpath = path.join(dir, `/${title}.mp4`)
+      stream = ytdl(firstvid, {
+      });
+    }
+    currentsongui.innerHTML =  "(" + (tracks.indexOf(song) + 1) + "/" + tracks.length + ") " + song;
+    loadingbar.max = tracks.length;
+
+    stream.once("response", () => {
+      starttime = Date.now();
+    })
+    stream.on('progress', (chunkLength, downloaded, total) => {
+      const percent = downloaded / total;
+      const downloadedMinutes = (Date.now() - starttime) / 1000 / 60;
+      const estimatedDownloadTime = (downloadedMinutes / percent) - downloadedMinutes;
+      readline.cursorTo(process.stdout, 0);
+      timeestimate.innerHTML = (`${(downloaded / 1024 / 1024).toFixed(2)}MB / ${(total / 1024 / 1024).toFixed(2)}MB | Time left: ${estimatedDownloadTime.toFixed(2)} Minutes `).toString();
+      readline.moveCursor(process.stdout, 0, -1);
+    });
+    await downloadSong(stream, title.split("-")[1], title.split("-")[0])
+    loadingbar.value += 1
+}
+document.getElementById("downbtn").classList.remove("is-loading");
+loadingbar.style.display = "none"
+currentsongui.style.display = "none";
+currentsongui.innerHTML = "Loading...";
+timeestimate.innerHTML = "(0MB/0MB) | Time left: 0.00 Minutes"
+timeestimate.style.display = "none"
+}
+
+
+//download songs from youtube video
+async function downloadYoutube(url, dir){
+  let stream = "";
+  let title = document.getElementById("title").innerHTML
+    .replaceAll("(","")
+    .replaceAll(")", "")
+    .replaceAll("Official", "")
+    .replaceAll("Video", "")
+    .replaceAll("Remastered","")
+    .replaceAll("[","")
+    .replaceAll("]","")
+    .replaceAll("lyrics","")
+    .replaceAll("with","")
+    .replaceAll("//", "")
+    .replaceAll("/","")
+    .trim()
+
+    loadingbar.style.display = "block"
+    currentsongui.style.display = "block";
+    timeestimate.style.display = "block"
+    loadingbar.value = 0;
+   //download it
+   if(readSettings("convetToMp3")){
+     downpath = path.join(dir, `${title}.mp3`)
+     stream = ytdl(url, {
+       quality: 'highestaudio',
+     });
+   } else {
+     downpath = path.join(dir, `${title}.mp4`)
+     stream = ytdl(url, {
+     });
+   }
+
+   currentsongui.innerHTML =  title;
+
+   stream.once("response", () => {
+     starttime = Date.now();
+     loadingbar.max = 100
+   })
+   stream.on('progress', (chunkLength, downloaded, total) => {
+     const percent = downloaded / total;
+     const downloadedMinutes = (Date.now() - starttime) / 1000 / 60;
+     const estimatedDownloadTime = (downloadedMinutes / percent) - downloadedMinutes;
+     readline.cursorTo(process.stdout, 0);
+     timeestimate.innerHTML = (`${(downloaded / 1024 / 1024).toFixed(2)}MB / ${(total / 1024 / 1024).toFixed(2)}MB | Time left: ${estimatedDownloadTime.toFixed(2)} Minutes `).toString();
+     readline.moveCursor(process.stdout, 0, -1);
+     loadingbar.value = ((percent * 100).toFixed(2));
+   });
+   await downloadSong(stream, title.split("-")[1], title.split("-")[0])
+   document.getElementById("downbtn").classList.remove("is-loading");
+   loadingbar.style.display = "none"
+   currentsongui.style.display = "none";
+   currentsongui.innerHTML = "Loading...";
+   timeestimate.innerHTML = "(0MB/0MB) | Time left: 0.00 Minutes"
+   timeestimate.style.display = "none"
+}
+
+
+function downloadSong(stream, title, author) {
+  return new Promise((resolve, reject) => {
+      ffmpeg(stream)
+      .audioBitrate(128)
+      .outputOptions('-metadata', `title=${title}`)
+      .outputOptions('-metadata', `artist=${author}`)
+      .save(`${downpath}`)
+      .on("end", () => {
+        resolve();
+      }).on('error',(err)=>{
+        return reject(new Error(err))
+     })
+    
+  })
 }
 
 
 
-//GET SONGS FROM PLAYLIST
-async function getPlaylistTracks(playlistId, dir) {
-  const data = await spotifyApi.getPlaylistTracks(playlistId, {
-    offset: 0,
-    limit: 100,
-    fields: 'items'
-  })
-  let tracks = [];
-  for (let track_obj of data.body.items) {
-    const track = track_obj.track
-    tracks.push(track);
-    let video = track.artists[0].name + " - " + track.name
-    console.log(video)
 
-    youtube.search(video).then((results) => {
-      // Unless you specify a type, it will only return 'video' results
-      let videos = results.videos;
-      console.log(videos[0].title) 
-      return videos[0].id;
-    }).then((firstvid) => {
-       //download it
-       var downpath = path.join(dir, `/${track.name.replace("//", "")}.mp4`)
-    try {
-      var y = ytdl('http://www.youtube.com/watch?v=' + firstvid).pipe(fs.createWriteStream(downpath));
-    } catch (error) {
-      console.log(error);
-    }
-    //when the download finishes convert the file and delete the old one
-    y.on("finish", function(){
-      if (readSettings("convetToMp3")) {
-        ffmpeg(downpath)
-        .toFormat('mp3')
-        .on('error', (err) => {
-            console.log('An error occurred: ' + err.message);
-        })
-        .on('progress', (progress) => {
-            console.log('Processing: ' + progress.targetSize + ' KB converted');
-        })
-        .on('end', () => {
-            console.log('Processing finished !');
-            //delete old file
-            fs.unlinkSync(downpath);
-        })
-        .save(path.join(dir, `/r${track.name.replace("//", "")}.mp3`));//path where you want to save your file
-      }
-    });
-    });
-
-    console.log("Finshed Downloading")
-   
-  }
-  return tracks;
-  }
-
-  function readSettings(setting) {
-    let rawdata = fs.readFileSync(path.join(__dirname, "settings.json"));
-    let settings = JSON.parse(rawdata);
-    return settings[setting];
-  }
-
-
-
-  
+function readSettings(setting) {
+  let rawdata = fs.readFileSync(path.join(__dirname, "settings.json"));
+  let settings = JSON.parse(rawdata);
+  return settings[setting];
+}
