@@ -259,25 +259,30 @@ function playAnimation() {
 
 }
 
-function moreoptionsHanlder() {
-  let box = document.getElementById("moreoptionsbox")
-  if (box.classList.contains("is-active")){
-    box.classList.remove("is-active");
-  } else {
-    box.classList.add("is-active");
-    //convert to mp3 button
-    let btn = document.getElementById("converttomp3");
-    btn.checked = readSettings("convetToMp3");
-    btn.addEventListener("click", () => {
-      writeSettings("convetToMp3", btn.checked);
-    })
 
-    //new folder button
-    let btn2 = document.getElementById("saveinnewfolder");
-    btn2.checked = readSettings("saveInNewFolder");
-    btn2.addEventListener("click", () => {
-      writeSettings("saveInNewFolder", btn2.checked);
-    })
+document.getElementById("moreoptions").addEventListener("click",moreoptionsHanlder)
+function moreoptionsHanlder(btn) {
+  let optbtn = document.getElementById("moreoptions")
+  let box = document.getElementById("moreoptionsbox")
+  if(!optbtn.classList.contains("is-cancel")){
+    if (box.classList.contains("is-active")){
+      box.classList.remove("is-active");
+    } else {
+      box.classList.add("is-active");
+      //convert to mp3 button
+      let btn = document.getElementById("converttomp3");
+      btn.checked = readSettings("convetToMp3");
+      btn.addEventListener("click", () => {
+        writeSettings("convetToMp3", btn.checked);
+      })
+  
+      //new folder button
+      let btn2 = document.getElementById("saveinnewfolder");
+      btn2.checked = readSettings("saveInNewFolder");
+      btn2.addEventListener("click", () => {
+        writeSettings("saveInNewFolder", btn2.checked);
+      })
+    }
   }
 }
 

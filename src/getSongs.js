@@ -26,9 +26,18 @@ var loadingbar = document.getElementById("loadingbar")
 let timeestimate = document.getElementById("timeestimate");
 var downpath = ""
 var starttime = ""
+var cancel = false
+
 module.exports = {
   downloadSongs
 }
+
+document.getElementById("moreoptions").addEventListener("click",() => {
+  if(document.getElementById("moreoptions").classList.contains("is-cancel")){
+    cancel = true;
+    console.log(cancel);
+  }
+})
 
 function downloadSongs(playlist, dir){
   // //get Playlist ID
@@ -50,6 +59,8 @@ async function getPlaylistTracks(playlistId, dir) {
   })
   let tracks = [];
   let stream = "";
+  cancelButton(true);
+
   for (let track_obj of data.body.items) {
     const track = track_obj.track
     tracks.push(track.artists[0].name + " - " + track.name)
@@ -59,60 +70,70 @@ async function getPlaylistTracks(playlistId, dir) {
   currentsongui.style.display = "block";
   timeestimate.style.display = "block"
   loadingbar.value = 0;
-  for (const song of tracks) {
-    console.log("I am at start of loop")
-    let firstvid = await youtube.search(song).then((results) => {
-      // Unless you specify a type, it will only return 'video' results
-      let videos = results.videos;
-      // console.log(videos[0].title) 
-      return videos[0].id;
-    })
-    let title = song
-    .replaceAll("(","")
-    .replaceAll(")", "")
-    .replaceAll("Official", "")
-    .replaceAll("Video", "")
-    .replaceAll("Remastered","")
-    .replaceAll("[","")
-    .replaceAll("]","")
-    .replaceAll("lyrics","")
-    .replaceAll("with","")
-    .replaceAll("//", "")
-    .replaceAll("/","")
-    .trim()
-    if(conv){
-      downpath = path.join(dir, `/${title}.mp3`)
-      stream = ytdl(firstvid, {
-        quality: 'highestaudio',
-      });
-    } else {
-      downpath = path.join(dir, `/${title}.mp4`)
-      stream = ytdl(firstvid, {
-      });
-    }
-    currentsongui.innerHTML =  "(" + (tracks.indexOf(song) + 1) + "/" + tracks.length + ") " + song;
-    loadingbar.max = tracks.length;
 
-    stream.once("response", () => {
-      starttime = Date.now();
-    })
-    stream.on('progress', (chunkLength, downloaded, total) => {
-      const percent = downloaded / total;
-      const downloadedMinutes = (Date.now() - starttime) / 1000 / 60;
-      const estimatedDownloadTime = (downloadedMinutes / percent) - downloadedMinutes;
-      readline.cursorTo(process.stdout, 0);
-      timeestimate.innerHTML = (`${(downloaded / 1024 / 1024).toFixed(2)}MB / ${(total / 1024 / 1024).toFixed(2)}MB | Time left: ${estimatedDownloadTime.toFixed(2)} Minutes `).toString();
-      readline.moveCursor(process.stdout, 0, -1);
-    });
-    await downloadSong(stream, title.split("-")[1], title.split("-")[0])
-    loadingbar.value += 1
-}
+    for (const song of tracks) {
+      if(!cancel){
+        console.log("I am at start of loop")
+        let firstvid = await youtube.search(song).then((results) => {
+          // Unless you specify a type, it will only return 'video' results
+          let videos = results.videos;
+          // console.log(videos[0].title) 
+          return videos[0].id;
+        })
+        let title = song
+        .replaceAll("(","")
+        .replaceAll(")", "")
+        .replaceAll("Official", "")
+        .replaceAll("Video", "")
+        .replaceAll("Remastered","")
+        .replaceAll("[","")
+        .replaceAll("]","")
+        .replaceAll("lyrics","")
+        .replaceAll("with","")
+        .replaceAll("//", "")
+        .replaceAll("/","")
+        .trim()
+        if(conv){
+          downpath = path.join(dir, `/${title}.mp3`)
+          stream = ytdl(firstvid, {
+            quality: 'highestaudio',
+          });
+        } else {
+          downpath = path.join(dir, `/${title}.mp4`)
+          stream = ytdl(firstvid, {
+          });
+        }
+        currentsongui.innerHTML =  "(" + (tracks.indexOf(song) + 1) + "/" + tracks.length + ") " + song;
+        loadingbar.max = tracks.length;
+    
+        stream.once("response", () => {
+          starttime = Date.now();
+        })
+        stream.on('progress', (chunkLength, downloaded, total) => {
+          const percent = downloaded / total;
+          const downloadedMinutes = (Date.now() - starttime) / 1000 / 60;
+          const estimatedDownloadTime = (downloadedMinutes / percent) - downloadedMinutes;
+          timeestimate.innerHTML = (`${(downloaded / 1024 / 1024).toFixed(2)}MB / ${(total / 1024 / 1024).toFixed(2)}MB | Time left: ${estimatedDownloadTime.toFixed(2)} Minutes `).toString();
+          loadingbar.value = tracks.indexOf(song) + percent
+        });
+        try {
+          await downloadSong(stream, title.split("-")[1], title.split("-")[0])
+        } catch (error) {
+          //TODO something
+        }
+        // loadingbar.value += 1
+      } else {
+        break;
+      }
+  }
+
 document.getElementById("downbtn").classList.remove("is-loading");
 loadingbar.style.display = "none"
 currentsongui.style.display = "none";
 currentsongui.innerHTML = "Loading...";
 timeestimate.innerHTML = "(0MB/0MB) | Time left: 0.00 Minutes"
 timeestimate.style.display = "none"
+cancelButton(false);
 }
 
 
@@ -132,7 +153,7 @@ async function downloadYoutube(url, dir){
     .replaceAll("//", "")
     .replaceAll("/","")
     .trim()
-
+    cancelButton(true)
     loadingbar.style.display = "block"
     currentsongui.style.display = "block";
     timeestimate.style.display = "block"
@@ -164,23 +185,37 @@ async function downloadYoutube(url, dir){
      readline.moveCursor(process.stdout, 0, -1);
      loadingbar.value = ((percent * 100).toFixed(2));
    });
-   await downloadSong(stream, title.split("-")[1], title.split("-")[0])
+
+   try {
+    await downloadSong(stream, title.split("-")[1], title.split("-")[0])
+   } catch (error) {
+     
+   }
+
    document.getElementById("downbtn").classList.remove("is-loading");
    loadingbar.style.display = "none"
    currentsongui.style.display = "none";
    currentsongui.innerHTML = "Loading...";
    timeestimate.innerHTML = "(0MB/0MB) | Time left: 0.00 Minutes"
    timeestimate.style.display = "none"
+   cancelButton(false)
+   cancel = false;
 }
 
 
 function downloadSong(stream, title, author) {
   return new Promise((resolve, reject) => {
-      ffmpeg(stream)
+      let process = ffmpeg(stream)
       .audioBitrate(128)
       .outputOptions('-metadata', `title=${title}`)
       .outputOptions('-metadata', `artist=${author}`)
       .save(`${downpath}`)
+      .on("progress", () => {
+        if(cancel){
+          console.log("stopping ffmpeg")
+          process.kill('SIGINT')
+        }
+      })
       .on("end", () => {
         resolve();
       }).on('error',(err)=>{
@@ -190,7 +225,26 @@ function downloadSong(stream, title, author) {
   })
 }
 
-
+function cancelButton(activated){
+  let btn = document.getElementById("moreoptions")
+  let icon = document.getElementById("moreopticon")
+  if (activated) {
+    cancel = false
+    btn.classList.remove("is-primary")
+    btn.classList.add("is-danger")
+    btn.classList.add("is-outlined")
+    icon.classList.remove("fa-cog")
+    icon.classList.add("fa-times-circle")
+    btn.classList.add("is-cancel")
+  } else {
+    btn.classList.add("is-primary")
+    btn.classList.remove("is-danger")
+    btn.classList.remove("is-outlined")
+    icon.classList.add("fa-cog")
+    icon.classList.remove("fa-times-circle")
+    btn.classList.remove("is-cancel")
+  }
+}
 
 
 function readSettings(setting) {
