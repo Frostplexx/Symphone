@@ -40,31 +40,46 @@ document.getElementById("moreoptions").addEventListener("click",() => {
 })
 
 function downloadSongs(playlist, dir){
-  // //get Playlist ID
   document.getElementById("downbtn").classList.add("is-loading")
-  if (playlist.includes("open.spotify")) {
+  if(playlist.includes("open.spotify.com/playlist")){
     let playlistID = playlist.split("playlist/")[1].split("?si=")[0];
-    getPlaylistTracks(playlistID, dir)
+    downloadSpotifyPlaylists(playlistID, dir)
+  } else if(playlist.includes("open.spotify.com/track")){
+    let trackID = playlist.split("track/")[1].split("?si=")[0];
+    downloadSpotifyTrack(trackID, dir)
+  } else if(playlist.includes("youtube.com/watch")){
+    downloadYoutubeVideo(playlist, dir)
   } else {
-    downloadYoutube(playlist, dir)
+    console.log("url not recognised")
   }
 }
 
 
 //download songs from spotify playlist
-async function getPlaylistTracks(playlistId, dir) {
-  const data = await spotifyApi.getPlaylistTracks(playlistId, {
-    offset: 0,
-    fields: 'items'
-  })
+async function downloadSpotifyPlaylists(playlistId, dir) {
+
   let tracks = [];
+  let offset = 0
+
+  while(true){
+    const data = await spotifyApi.getPlaylistTracks(playlistId, {
+      offset: offset,
+      fields: 'items'
+    })
+    let items = data.body.items
+    if (items.length == 0) {
+      break;
+    } else {
+      for (let track_obj of items) {
+        tracks.push(track_obj.track.artists[0].name + " - " + track_obj.track.name)
+      }
+    }
+    offset += 100
+  }
+
   let stream = "";
   cancelButton(true);
 
-  for (let track_obj of data.body.items) {
-    const track = track_obj.track
-    tracks.push(track.artists[0].name + " - " + track.name)
-  }
   let conv = readSettings("convetToMp3");
   loadingbar.style.display = "block"
   currentsongui.style.display = "block";
@@ -73,26 +88,13 @@ async function getPlaylistTracks(playlistId, dir) {
 
     for (const song of tracks) {
       if(!cancel){
-        console.log("I am at start of loop")
         let firstvid = await youtube.search(song).then((results) => {
           // Unless you specify a type, it will only return 'video' results
           let videos = results.videos;
           // console.log(videos[0].title) 
           return videos[0].id;
         })
-        let title = song
-        .replaceAll("(","")
-        .replaceAll(")", "")
-        .replaceAll("Official", "")
-        .replaceAll("Video", "")
-        .replaceAll("Remastered","")
-        .replaceAll("[","")
-        .replaceAll("]","")
-        .replaceAll("lyrics","")
-        .replaceAll("with","")
-        .replaceAll("//", "")
-        .replaceAll("/","")
-        .trim()
+        let title = titleCleaner(song);
         if(conv){
           downpath = path.join(dir, `/${title}.mp3`)
           stream = ytdl(firstvid, {
@@ -136,23 +138,69 @@ timeestimate.style.display = "none"
 cancelButton(false);
 }
 
+//download song from spotify
+async function downloadSpotifyTrack(trackID, dir){
+  let conv = readSettings("convetToMp3");
+  let track = await spotifyApi.getTrack(trackID)
+  let stream = "";
+  loadingbar.style.display = "block"
+  currentsongui.style.display = "block";
+  timeestimate.style.display = "block"
+  loadingbar.value = 0;
+  track = track.body
+  track =  track["artists"][0]["name"] + " - " + track["name"]
+  cancelButton(true)
+  let firstvid = await youtube.search(track).then((results) => {
+    // Unless you specify a type, it will only return 'video' results
+    let videos = results.videos;
+    // console.log(videos[0].title) 
+    return videos[0].id;
+  })
+  if(conv){
+    downpath = path.join(dir, `/${track}.mp3`)
+    stream = ytdl(firstvid, {
+      quality: 'highestaudio',
+    });
+  } else {
+    downpath = path.join(dir, `/${track}.mp4`)
+    stream = ytdl(firstvid, {
+    });
+  }
+  currentsongui.innerHTML =  titleCleaner(track);
+  loadingbar.max = 100
+
+  stream.once("response", () => {
+    starttime = Date.now();
+  })
+  stream.on('progress', (chunkLength, downloaded, total) => {
+    const percent = downloaded / total;
+    const downloadedMinutes = (Date.now() - starttime) / 1000 / 60;
+    const estimatedDownloadTime = (downloadedMinutes / percent) - downloadedMinutes;
+    timeestimate.innerHTML = (`${(downloaded / 1024 / 1024).toFixed(2)}MB / ${(total / 1024 / 1024).toFixed(2)}MB | Time left: ${estimatedDownloadTime.toFixed(2)} Minutes `).toString();
+    loadingbar.value = ((percent * 100).toFixed(2));
+  });
+
+  try {
+    console.log(title)
+    await downloadSong(stream, track.split("-")[1], track.split("-")[0])
+  } catch (error) {
+    //TODO something
+  }
+
+document.getElementById("downbtn").classList.remove("is-loading");
+loadingbar.style.display = "none"
+currentsongui.style.display = "none";
+currentsongui.innerHTML = "Loading...";
+timeestimate.innerHTML = "(0MB/0MB) | Time left: 0.00 Minutes"
+timeestimate.style.display = "none"
+cancelButton(false);
+
+}
 
 //download songs from youtube video
-async function downloadYoutube(url, dir){
+async function downloadYoutubeVideo(url, dir){
   let stream = "";
-  let title = document.getElementById("title").innerHTML
-    .replaceAll("(","")
-    .replaceAll(")", "")
-    .replaceAll("Official", "")
-    .replaceAll("Video", "")
-    .replaceAll("Remastered","")
-    .replaceAll("[","")
-    .replaceAll("]","")
-    .replaceAll("lyrics","")
-    .replaceAll("with","")
-    .replaceAll("//", "")
-    .replaceAll("/","")
-    .trim()
+  let title = titleCleaner(document.getElementById("title").innerHTML)
     cancelButton(true)
     loadingbar.style.display = "block"
     currentsongui.style.display = "block";
@@ -202,7 +250,7 @@ async function downloadYoutube(url, dir){
    cancel = false;
 }
 
-
+//this is the thing that downloads 
 function downloadSong(stream, title, author) {
   return new Promise((resolve, reject) => {
       let process = ffmpeg(stream)
@@ -225,9 +273,12 @@ function downloadSong(stream, title, author) {
   })
 }
 
+
+//helper functions
 function cancelButton(activated){
   let btn = document.getElementById("moreoptions")
   let icon = document.getElementById("moreopticon")
+  document.getElementById("moreoptionsbox").classList.remove("is-active")
   if (activated) {
     cancel = false
     btn.classList.remove("is-primary")
@@ -244,6 +295,22 @@ function cancelButton(activated){
     icon.classList.remove("fa-times-circle")
     btn.classList.remove("is-cancel")
   }
+}
+
+function titleCleaner(title){
+  return title
+        .replaceAll("(","")
+        .replaceAll(")", "")
+        .replaceAll("Official", "")
+        .replaceAll("Video", "")
+        .replaceAll("Remastered","")
+        .replaceAll("[","")
+        .replaceAll("]","")
+        .replaceAll("lyrics","")
+        .replaceAll("with","")
+        .replaceAll("//", "")
+        .replaceAll("/","")
+        .trim()
 }
 
 

@@ -154,10 +154,9 @@ document.getElementById("urlfield").addEventListener("change", urlHandler)
 function urlHandler(event){
   event.preventDefault();
   let query = document.getElementById("urlfield").value;
-  if(query.includes("open.spotify.com")){
+  if(query.includes("open.spotify.com/playlist")){
       //https://open.spotify.com/playlist/0KsB10rOY5rm3XvEychrHi
       let id = query.split("playlist/")[1];
-      console.log(id);
       document.getElementById("searchloader").classList.add("is-active");
       spotifyApi.getPlaylist(id).then(res => {
          let json = res.body
@@ -194,7 +193,7 @@ function urlHandler(event){
 
     document.getElementById("downbtn").disabled = true;
 
-  } else if(query.includes("youtube.com")){
+  } else if(query.includes("youtube.com") && !query.includes("&list=")){
     document.getElementById("searchloader").classList.add("is-active");
     ytdl.getBasicInfo(query).then((info) =>{
       console.log(info.player_response.videoDetails.thumbnail.thumbnails);
@@ -209,7 +208,34 @@ function urlHandler(event){
       document.getElementById("spoticn").style.color = "rgb(255,0,0)";
       playAnimation()
     });
-  } else {
+  } else if (query.includes("open.spotify.com/track")){
+    let id = query.split("track/")[1].split("?si=")[0]
+    document.getElementById("searchloader").classList.add("is-active");
+    spotifyApi.getTrack(id).then(res => {
+       let json = res.body
+       document.getElementById("placeholder").style.display = "none"
+       document.getElementById("cover").src = json["album"]["images"][0]["url"]
+       document.getElementById("title").innerHTML = json["name"]
+       document.getElementById("author").innerHTML = "By " + json["artists"][0]["name"] + " • " + json["album"]["name"] 
+       document.getElementById("musicbox").classList.add("is-active");
+
+       document.getElementById("spoticn").classList.remove("fa-youtube");
+       document.getElementById("spoticn").classList.add("fa-spotify");
+       document.getElementById("spoticn").style.color = "rgb(39,201,77)"
+       playAnimation();
+      });
+
+  } else if (query.includes("youtube.com") && query.includes("&list=")){
+    document.getElementById("placeholder").style.display = "none"
+    document.getElementById("title").innerHTML = "Youtube Playlists"
+    document.getElementById("author").innerHTML = "Are currently not Supported"
+    document.getElementById("cover").src = "https://i.imgur.com/ibg5c3E.png"
+    document.getElementById("musicbox").classList.add("is-active");
+    document.getElementById("spoticn").classList.remove("fa-spotify");
+    document.getElementById("spoticn").classList.add("fa-youtube");
+    document.getElementById("spoticn").style.color = "rgb(255,0,0)";
+    playAnimation()
+  }else {
     document.getElementById("searchloader").classList.add("is-active");
     youtube.search(query).then((results) => {
       // Unless you specify a type, it will only return 'video' results
@@ -235,7 +261,7 @@ function urlHandler(event){
       });
 
     });
-}
+  }
 
 }
 
@@ -261,7 +287,7 @@ function playAnimation() {
 
 
 document.getElementById("moreoptions").addEventListener("click",moreoptionsHanlder)
-function moreoptionsHanlder(btn) {
+function moreoptionsHanlder() {
   let optbtn = document.getElementById("moreoptions")
   let box = document.getElementById("moreoptionsbox")
   if(!optbtn.classList.contains("is-cancel")){
@@ -384,11 +410,17 @@ async function browse(fieldid) {
 
 // }
 
+function fetchProfile(){
+  let profilepic = document.getElementById("profilepic");
+  let profilename = document.getElementById("profilename");
+
+  profilepic.src = readSettings("profilepic");
+  profilename.innerHTML = readSettings("username");
+}
 
 
 
 //helperfunctions
-
 
 
 // console.log(settingsPath);
@@ -409,7 +441,7 @@ function writeSettings(name, value) {
 
 //minimise and close when running on Windows
 if(process.platform === "win32") {
-  document.getElementById("drag-region").style.display = "block";
+  document.getElementById("window-controls").style.display = "grid";
 }
 (function () {
   // Retrieve remote BrowserWindow

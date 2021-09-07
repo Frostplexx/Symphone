@@ -114,10 +114,9 @@ app.on('activate', () => {
 // - add back convert functionality
 // - add playlist page 
 // - finish download page
-    // - fetch more than 100 song from spotify
+  // - some errorhandling, otherwise the download gets stuck
 // - make everything faster 
 // - fix login windoww --> first time the app is added
-// - fix windows uglieness
 
 
 //being worked on
@@ -128,9 +127,10 @@ app.on('activate', () => {
   // - youtbe url and other search 
   // - track how many songs have to be downloaded and have been downloaded 
   // - add cancel button
-  // - some errorhandling, otherwise the download gets stuck
-
+  // - fetch more than 100 song from spotify
+  // - fix windows uglieness
 
 //bugs
   //ffmpeg kill on cancel only works the first timee
   //sometimes directory is choosen but download button doesnt unlock
+  //not really a bug, but youtube playlists arent supported (yet)
