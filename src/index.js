@@ -116,7 +116,7 @@ app.on('activate', () => {
 // - finish download page
   // - some errorhandling, otherwise the download gets stuck
 // - make everything faster 
-// - fix login windoww --> first time the app is added
+// - fix login window --> first time the app is added
 
 
 //being worked on

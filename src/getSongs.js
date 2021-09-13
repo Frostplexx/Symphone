@@ -27,6 +27,7 @@ let timeestimate = document.getElementById("timeestimate");
 var downpath = ""
 var starttime = ""
 var cancel = false
+var playlistname = "";
 
 module.exports = {
   downloadSongs
@@ -60,7 +61,7 @@ async function downloadSpotifyPlaylists(playlistId, dir) {
 
   let tracks = [];
   let offset = 0
-
+  playlistname = titleCleaner(document.getElementById("title").innerHTML);
   while(true){
     const data = await spotifyApi.getPlaylistTracks(playlistId, {
       offset: offset,
@@ -81,6 +82,7 @@ async function downloadSpotifyPlaylists(playlistId, dir) {
   cancelButton(true);
 
   let conv = readSettings("convetToMp3");
+  let folder = readSettings("saveInNewFolder")
   loadingbar.style.display = "block"
   currentsongui.style.display = "block";
   timeestimate.style.display = "block"
@@ -96,12 +98,31 @@ async function downloadSpotifyPlaylists(playlistId, dir) {
         })
         let title = titleCleaner(song);
         if(conv){
-          downpath = path.join(dir, `/${title}.mp3`)
+          if (!fs.existsSync(path.join(dir, playlistname)) && folder) {
+            fs.mkdirSync(path.join(dir, playlistname), {
+              recursive: true
+            });
+            downpath = path.join(dir,playlistname,`/${title}.mp3`)
+          } else if(folder){
+            downpath = path.join(dir,playlistname,`/${title}.mp3`)
+          } else {
+            downpath = path.join(dir,`/${title}.mp3`)
+
+          }
           stream = ytdl(firstvid, {
             quality: 'highestaudio',
           });
         } else {
-          downpath = path.join(dir, `/${title}.mp4`)
+          if (!fs.existsSync(path.join(dir, playlistname)) && folder) {
+            fs.mkdirSync(path.join(dir, playlistname), {
+              recursive: true
+            });
+            downpath = path.join(dir,playlistname,`/${title}.mp3`)
+          } else if(folder){
+            downpath = path.join(dir,playlistname,`/${title}.mp3`)
+          } else {
+            downpath = path.join(dir,`/${title}.mp3`)
+          }
           stream = ytdl(firstvid, {
           });
         }
