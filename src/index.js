@@ -108,29 +108,3 @@ app.on('activate', () => {
 // code. You can also put them in separate files and import them here.
 
 
-//TODO
-// - add profile page
-// - add settings 
-// - add back convert functionality
-// - add playlist page 
-// - finish download page
-  // - some errorhandling, otherwise the download gets stuck
-// - make everything faster 
-// - fix login window --> first time the app is added
-
-
-//being worked on
-  // - add more options functionality 
-
-
-//done
-  // - youtbe url and other search 
-  // - track how many songs have to be downloaded and have been downloaded 
-  // - add cancel button
-  // - fetch more than 100 song from spotify
-  // - fix windows uglieness
-
-//bugs
-  //ffmpeg kill on cancel only works the first timee
-  //sometimes directory is choosen but download button doesnt unlock
-  //not really a bug, but youtube playlists arent supported (yet)

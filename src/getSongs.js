@@ -1,7 +1,7 @@
 const fs = require('fs')
 var path = require('path');
 const readline = require('readline');
-
+const fetch = require('node-fetch');
 
 //Spotify API stuff
 const SpotifyWebApi = require('spotify-web-api-node');
@@ -29,6 +29,7 @@ var starttime = ""
 var cancel = false
 var playlistname = "";
 
+var metadata = {};
 module.exports = {
   downloadSongs
 }
@@ -60,6 +61,7 @@ function downloadSongs(playlist, dir){
 async function downloadSpotifyPlaylists(playlistId, dir) {
 
   let tracks = [];
+  let trackids = [];
   let offset = 0
   playlistname = titleCleaner(document.getElementById("title").innerHTML);
   while(true){
@@ -73,6 +75,7 @@ async function downloadSpotifyPlaylists(playlistId, dir) {
     } else {
       for (let track_obj of items) {
         tracks.push(track_obj.track.artists[0].name + " - " + track_obj.track.name)
+        trackids.push(track_obj.track.id)
       }
     }
     offset += 100
@@ -90,6 +93,8 @@ async function downloadSpotifyPlaylists(playlistId, dir) {
 
     for (const song of tracks) {
       if(!cancel){
+        await getMetadata(trackids[tracks.indexOf(song)])
+        console.log(metadata)
         let firstvid = await youtube.search(song).then((results) => {
           // Unless you specify a type, it will only return 'video' results
           let videos = results.videos;
@@ -140,7 +145,7 @@ async function downloadSpotifyPlaylists(playlistId, dir) {
           loadingbar.value = tracks.indexOf(song) + percent
         });
         try {
-          await downloadSong(stream, title.split("-")[1], title.split("-")[0])
+          await downloadSong(stream)
         } catch (error) {
           //TODO something
         }
@@ -272,16 +277,18 @@ async function downloadYoutubeVideo(url, dir){
 }
 
 //this is the thing that downloads 
-function downloadSong(stream, title, author) {
+function downloadSong(stream) {
   return new Promise((resolve, reject) => {
       let process = ffmpeg(stream)
       .audioBitrate(128)
-      .outputOptions('-metadata', `title=${title}`)
-      .outputOptions('-metadata', `artist=${author}`)
+      .outputOption('-metadata', `title=${metadata.title}`)
+      .outputOption('-metadata', `artist=${metadata.artists}`)
+      .outputOption('-metadata', `album=${metadata.album}`)
+      .outputOption('-metadata', `year=${metadata.year}`)
+      .outputOption('-i', metadata.albumCover)
       .save(`${downpath}`)
       .on("progress", () => {
         if(cancel){
-          console.log("stopping ffmpeg")
           process.kill('SIGINT')
         }
       })
@@ -332,6 +339,28 @@ function titleCleaner(title){
         .replaceAll("//", "")
         .replaceAll("/","")
         .trim()
+}
+
+async function getMetadata(songid){
+  let song = await spotifyApi.getTrack(songid)
+  song = song.body
+
+  const response = await fetch(song["album"]["images"][0]["url"]);
+  const buffer = await response.buffer();
+  fs.writeFile(path.join(__dirname, "/cover.jpg"), buffer, () => 
+    console.log('finished downloading!'));
+
+  return new Promise((resolve, reject) => {
+    metadata = {
+      "title": song["name"],
+      "album": song["album"]["name"],
+      "artists": song["artists"][0]["name"],
+      "albumCover": path.join(__dirname, "/cover.jpg"),
+      "year": song["album"]["release_date"].split("-")[0], 
+      "track_number": song["track_number"]
+    } 
+    resolve()
+  }) 
 }
 
 
