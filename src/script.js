@@ -418,37 +418,65 @@ function fetchProfile(){
   profilename.innerHTML = readSettings("username");
 }
 
-// generateMessage("Warning", "This is a test to see if message generation is working", "danger")
+
+var msgqueue = {
+  items: [
+
+  ]
+}
+
+var types = [
+  "is-danger",
+  "is-warning", 
+  "is-success", 
+  "is-info", 
+  "is-primary",
+  "is-link"
+]
+
+generateMessage("Warning", "This is a test to see if message generation is working", 0)
+
 
 function generateMessage(title, content, type){
   let msgbox = document.getElementById("message")
+  if(!msgbox.classList.contains("is-active")){
   document.getElementById("messageTitle").innerHTML = title;
   document.getElementById("messageContent").innerHTML = content;
-
-  switch (type) {
-    case "danger":
-      msgbox.classList.add("is-danger")
-      break;
-    case "warning":
-      msgbox.classList.add("is-warning")
-      break;
-    case "success":
-      msgbox.classList.add("is-success")
-
-      break;
-    case "info":
-      msgbox.classList.add("is-info")
-      break;
-    case "primary":
-      msgbox.classList.add("is-primary")
-      break;
-    default:
-      break;
-  }
+  document.getElementById("loadingbar").style.top = "78%"
+  document.getElementById("currentdownloadedsong").style.top = "75%"
+  document.getElementById("timeestimate").style.top = "75%"
+  msgbox.classList.add(types[type])
   msgbox.classList.add("is-active")
+  } else {
+    msgqueue["items"].push(
+      {
+        "title": title,
+        "content": content,
+        "type": type,
+       }
+    ) 
+  console.log(msgqueue)
+  }
+} 
 
+function deleteMessage(){
+  let msgbox = document.getElementById("message")
+  if(msgqueue.items.length == 0){
+    document.getElementById("loadingbar").style.top = "84%"
+    document.getElementById("currentdownloadedsong").style.top = "81%"
+    document.getElementById("timeestimate").style.top = "81%"
+    document.getElementById('message').classList.remove('is-active')
+  } else {
+    console.log(msgqueue)
+    document.getElementById("messageTitle").innerHTML = msgqueue.items[0].title;
+    document.getElementById("messageContent").innerHTML = msgqueue.items[0].content;
+    for (const items of types) {
+      msgbox.classList.remove(items)
+    }
+    msgbox.classList.add(types[msgqueue.items[0].type])
+    msgqueue.items.splice(0,1)
+  }
 }
-
 
 
 //helperfunctions

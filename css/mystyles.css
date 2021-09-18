@@ -147,8 +147,9 @@ button {
 #message{
   position: absolute;
   display: none;
-  top: 27rem;
+  top: 30rem;
   width: 95%;
+  z-index: 1;
 }
 
 #message.is-active{

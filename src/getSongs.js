@@ -285,7 +285,7 @@ function downloadSong(stream) {
       .outputOption('-metadata', `artist=${metadata.artists}`)
       .outputOption('-metadata', `album=${metadata.album}`)
       .outputOption('-metadata', `year=${metadata.year}`)
-      .outputOption('-i', metadata.albumCover)
+      // .outputOption('-i', metadata.albumCover)
       .save(`${downpath}`)
       .on("progress", () => {
         if(cancel){
