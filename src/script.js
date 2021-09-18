@@ -418,6 +418,37 @@ function fetchProfile(){
   profilename.innerHTML = readSettings("username");
 }
 
+// generateMessage("Warning", "This is a test to see if message generation is working", "danger")
+
+function generateMessage(title, content, type){
+  let msgbox = document.getElementById("message")
+  document.getElementById("messageTitle").innerHTML = title;
+  document.getElementById("messageContent").innerHTML = content;
+
+  switch (type) {
+    case "danger":
+      msgbox.classList.add("is-danger")
+      break;
+    case "warning":
+      msgbox.classList.add("is-warning")
+      break;
+    case "success":
+      msgbox.classList.add("is-success")
+
+      break;
+    case "info":
+      msgbox.classList.add("is-info")
+      break;
+    case "primary":
+      msgbox.classList.add("is-primary")
+      break;
+    default:
+      break;
+  }
+  msgbox.classList.add("is-active")
+
+}
+
 
 
 //helperfunctions
