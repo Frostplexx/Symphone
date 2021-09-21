@@ -1,5 +1,6 @@
 const app = require('electron')
 const spotdl = require("./getSongs");
+const globals = require('./globals')
 
 //file stuff
 const fs = require('fs');
@@ -179,7 +180,7 @@ function urlHandler(event){
     document.getElementById("placeholder").style.display = "block";
     document.getElementById("directory").style.display = "none";
     document.getElementById("searchloader").style.left = "77%";
-
+    globals.deleteMessage();
 
     document.getElementById("moreoptions").style.left = "59.5%"
     document.getElementById("downbtn").style.left = "72%"
@@ -235,7 +236,7 @@ function urlHandler(event){
     document.getElementById("spoticn").classList.add("fa-youtube");
     document.getElementById("spoticn").style.color = "rgb(255,0,0)";
     playAnimation()
-  }else {
+  }else if(!query.includes("https://")){
     document.getElementById("searchloader").classList.add("is-active");
     youtube.search(query).then((results) => {
       // Unless you specify a type, it will only return 'video' results
@@ -261,6 +262,8 @@ function urlHandler(event){
       });
 
     });
+  } else {
+    globals.generateMessage("Error", "This URL couldn't be recognized. Please enter a Youtube or Spotify URL", 0)
   }
 
 }
@@ -320,7 +323,6 @@ async function browse(fieldid) {
   if (filepath.filePaths[0] !== undefined) {
     dir.innerHTML = filepath.filePaths[0];
   }
-  // TODO
   document.getElementById("downbtn").disabled = false;
 }
 
@@ -367,48 +369,37 @@ async function browse(fieldid) {
 
 //dorpdown and converter
 
-// {
-//   //DOMContentLoaded - it fires when initial HTML document has been completely loaded
-//   document.addEventListener('DOMContentLoaded', function () {
-//     // querySelector - it returns the element within the document that matches the specified selector
-//     var dropdown = document.querySelector('.dropdown');
+//ffmpeg
+var ffmpeg = require('fluent-ffmpeg');
+var ffmpegstatic = require('ffmpeg-static-electron');
+ffmpeg.setFfmpegPath(ffmpegstatic.path);
 
-//     //addEventListener - attaches an event handler to the specified element.
-//     dropdown.addEventListener('click', function (event) {
+var files = ""
+document.getElementById('convdirectory').addEventListener("DOMSubtreeModified", () => {
+  let directory = document.getElementById('convdirectory').innerHTML
+  console.log(directory)
+  files = fs.readdirSync(directory)
+  files = files.filter(file => {
+    return path.extname(file).toLowerCase() === ".mp3"
+  })
+  console.log(files)
+})
 
-//       //event.stopPropagation() - it stops the bubbling of an event to parent elements, by preventing parent event handlers from being executed
-//       event.stopPropagation();
+document.getElementById("convbtn").addEventListener("click", () => {
+  for(let file of files) {
+    var proc = new ffmpeg({ source: path.join( document.getElementById('convdirectory').innerHTML, file) })
+    .saveToFile(path.join(document.getElementById('convdirectory').innerHTML, file.split(".")[0] + ".mp4"), function(stdout, stderr) {
+      console.log('file has been converted succesfully');
+    });
+  }
+  
+})
 
-//       //classList.toggle - it toggles between adding and removing a class name from an element
-//       dropdown.classList.toggle('is-active');
-//     });
-//   });
 
-//   function dropdownsel(format, src) {
-//     console.log("Selection: " + format);
-//     document.getElementById(src).textContent = format;
-//     let dir = document.querySelector('#convertdir');
-//     let formatselect = document.querySelector('#convertsel');
-//     let convertBtn = document.querySelector('#convertBtn');
-//     if (dir.value === "" || !formatselect.textContent.localeCompare("Format")) {
-//       convertBtn.disabled = true; //button remains disabled
-//     } else {
-//       convertBtn.disabled = false; //button is enabled
-//     }
-//   }
 
-//   function convert() {
-//     let format = document.getElementById("convertsel").textContent;
-//     let dir = document.getElementById("convertdir").value;
-//     let installer = __dirname + "\\scripts\\convert.py";
-//     let convbtn = document.getElementById("convertBtn");
-//     //ffmpeg -i "Imagine Dragons - It's Time.mp3" "Imagine Dragons - It's Time.ogg"
 
-//     convbtn.classList.add("is-loading");
-   
-//   }
 
-// }
+
 
 function fetchProfile(){
   let profilepic = document.getElementById("profilepic");
@@ -433,51 +424,6 @@ var types = [
   "is-primary",
   "is-link"
 ]
-
-generateMessage("Warning", "This is a test to see if message generation is working", 0)
-
-
-function generateMessage(title, content, type){
-  let msgbox = document.getElementById("message")
-  if(!msgbox.classList.contains("is-active")){
-  document.getElementById("messageTitle").innerHTML = title;
-  document.getElementById("messageContent").innerHTML = content;
-  document.getElementById("loadingbar").style.top = "78%"
-  document.getElementById("currentdownloadedsong").style.top = "75%"
-  document.getElementById("timeestimate").style.top = "75%"
-  msgbox.classList.add(types[type])
-  msgbox.classList.add("is-active")
-  } else {
-    msgqueue["items"].push(
-      {
-        "title": title,
-        "content": content,
-        "type": type,
-       }
-    ) 
-  console.log(msgqueue)
-  }
-} 
-
-function deleteMessage(){
-  let msgbox = document.getElementById("message")
-  if(msgqueue.items.length == 0){
-    document.getElementById("loadingbar").style.top = "84%"
-    document.getElementById("currentdownloadedsong").style.top = "81%"
-    document.getElementById("timeestimate").style.top = "81%"
-    document.getElementById('message').classList.remove('is-active')
-  } else {
-    console.log(msgqueue)
-    document.getElementById("messageTitle").innerHTML = msgqueue.items[0].title;
-    document.getElementById("messageContent").innerHTML = msgqueue.items[0].content;
-    for (const items of types) {
-      msgbox.classList.remove(items)
-    }
-    msgbox.classList.add(types[msgqueue.items[0].type])
-    msgqueue.items.splice(0,1)
-  }
-}
-
 
 //helperfunctions
 

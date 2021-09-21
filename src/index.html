@@ -9,6 +9,7 @@
   <link rel="stylesheet" href="../css/mystyles.css">
   <script defer src="script.js"></script>
   <script defer src="getToken.js"></script>
+  <script defer src="globals.js"></script>
 
 </head>
 
@@ -181,7 +182,8 @@
 
     <div id="convert" class="maincont">
       <div class="buttons" id="buttongroup">
-        <button class="button is-primary" id="dirconvbtn" onclick="browse('directory')">
+        <div id="convdirectory"></div>
+        <button class="button is-primary" id="dirconvbtn" onclick="browse('convdirectory')">
           <span class="icon">
             <i class="fas fa-folder-open"></i>
           </span>
@@ -189,7 +191,7 @@
             Choose Folder
           </span>
         </button>
-        <button class="button is-primary" onclick="convert()">
+        <button class="button is-primary" id="convbtn">
         <span class="icon">
           <i class="fas fa-exchange-alt"></i>
         </span>

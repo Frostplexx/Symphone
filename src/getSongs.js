@@ -1,4 +1,5 @@
 const fs = require('fs')
+const globals = require('./globals')
 var path = require('path');
 const readline = require('readline');
 const fetch = require('node-fetch');
@@ -52,7 +53,7 @@ function downloadSongs(playlist, dir){
   } else if(playlist.includes("youtube.com/watch")){
     downloadYoutubeVideo(playlist, dir)
   } else {
-    console.log("url not recognised")
+    globals.generateMessage("Error", "This URL couldn't be recognized", 0)
   }
 }
 
@@ -300,8 +301,6 @@ function downloadSong(stream) {
     
   })
 }
-
-
 //helper functions
 function cancelButton(activated){
   let btn = document.getElementById("moreoptions")
@@ -324,7 +323,7 @@ function cancelButton(activated){
     btn.classList.remove("is-cancel")
   }
 }
-
+//removes "Official Video" etc from name
 function titleCleaner(title){
   return title
         .replaceAll("(","")
@@ -341,6 +340,7 @@ function titleCleaner(title){
         .trim()
 }
 
+//gets the metadata for a given song id and puts it into a json
 async function getMetadata(songid){
   let song = await spotifyApi.getTrack(songid)
   song = song.body

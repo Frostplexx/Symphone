@@ -413,14 +413,25 @@ button {
 
 #buttongroup{
   position: absolute;
-  top: 6.5rem;
-  left: 50%;
-  width: 200px;
+  top: 55%;
+  left: 60%;
+  width: 400px;
   height: 100px;
   -ms-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
 }
 
+#convdirectory{
+  position: absolute;
+  text-align: center;
+  opacity: 40%;
+  font-size: small;
+  top: 80.5%;
+  left: 35%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  transition: ease-out 0.1s;
+}
 
 
 
