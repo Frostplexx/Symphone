@@ -245,7 +245,6 @@ function urlHandler(event){
       return videos[0].id;
     }).then((firstvid) => {
       ytdl.getBasicInfo('http://www.youtube.com/watch?v=' + firstvid).then((info) =>{
-        console.log(info);
         document.querySelector('#urlfield').value = info.videoDetails.video_url;
         document.getElementById("placeholder").style.display = "none"
         document.getElementById("title").innerHTML = info["player_response"]["videoDetails"]["title"]
@@ -266,6 +265,10 @@ function urlHandler(event){
     globals.generateMessage("Error", "This URL couldn't be recognized. Please enter a Youtube or Spotify URL", 0)
   }
 
+  setTimeout(function() {
+    globals.ColorExtract();
+  }, 700);
+
 }
 
 function playAnimation() {
@@ -285,7 +288,6 @@ function playAnimation() {
   document.getElementById("dirbtn").style.left = "14%";
 
   document.getElementById("searchloader").classList.remove("is-active");
-
 }
 
 
@@ -382,7 +384,19 @@ document.getElementById('convdirectory').addEventListener("DOMSubtreeModified", 
   files = files.filter(file => {
     return path.extname(file).toLowerCase() === ".mp3"
   })
-  console.log(files)
+  if(files.length > 0){
+    document.getElementById("buttongroup").style.top = "6.5rem";
+    document.getElementById("filescontainer").style.height = "70%"
+    document.getElementById("filescontainer").style.opacity = "100%";
+    document.getElementById("filescontainer").style.top = "10.5rem";
+    for(let file in files) {
+      createSong(files[file])
+    }
+  } else {
+    let elem = document.querySelector(".songitem");
+    if(elem != null) elem.remove();
+    
+  }
 })
 
 document.getElementById("convbtn").addEventListener("click", () => {
@@ -395,11 +409,44 @@ document.getElementById("convbtn").addEventListener("click", () => {
   
 })
 
+function createSong(songname){
+  //song item settings
+  let itemcont = document.createElement("div")
+  let title = document.createElement("h1"); 
+  let icon = document.createElement("img")
+
+  icon.src = "https://i.imgur.com/tbHeHBR.png";
+  icon.style.height = "32px"
+  icon.style.width = "32px"
+  icon.style.filter = "invert(24%) sepia(88%) saturate(3818%) hue-rotate(211deg) brightness(103%) contrast(107%) opacity(60%)"
+  icon.style.position = "absolute"
 
 
+  title.style.fontWeight = "500"
+  title.style.marginLeft = "50px"
+  title.style.maxWidth = "400px";
+  title.style.whiteSpace = "nowrap";
+  title.style.overflow = "hidden";
+  title.style.textOverflow = "ellipsis";
+  title.style.position = "absolute"
+  title.style.textAlign = "center"
+  title.innerHTML = songname
 
+  itemcont.classList.add("block")
+  itemcont.classList.add("songitem")
+  itemcont.style.backgroundColor = "rgba(0,0,0,0.05)"
+  itemcont.style.borderRadius = "5px"
+  itemcont.style.width = "100%"
+  itemcont.style.height = "65px"
+  itemcont.style.marginBottom = "0.5rem" 
+  itemcont.style.paddingTop = "1rem"
+  itemcont.style.paddingLeft = "1rem"
+  itemcont.appendChild(icon)
+  itemcont.appendChild(title);
 
+  document.getElementById("filescontainer").appendChild(itemcont)
 
+}
 
 function fetchProfile(){
   let profilepic = document.getElementById("profilepic");
