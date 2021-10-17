@@ -1,13 +1,7 @@
 {
-  "clientid": "179baf2322124fa3ad9cf70cc82ed8b2",
-  "clientsecret": "0073bded3bae40a882cf5065c6091f08",
-  "access_token": "BQBl4bAjUfvXlOKIOES48QruJYg_Aehw9cdgEy7NLm5s-MWBdyORdWGxcG_9SbTo75p28kJr3tzI9EnHKTcSVbDhN-lP5s0uXhCLdXh6-AKmlJmVkuNzyQmUUbNg7W5rgmIAoWOEuEi-Ln7lHj0eoC9xEPBJCFcsqqycoY-p16_Zhs3iNF5LhcK3uqcVt89-28Nm9HHCX6Nku2RXgJ5XxdFt3MJe_CLHvs8Qs079Zgfbx-MT7N91aluZE1-qTwKazrbFG4odwUL1N1l1n1M33-l14CBuBSnAlM0",
-  "refresh_token": "AQCttZNW5Qvu4n5bRyjqOIY4CfuOLJ14kxiPhv6UvFUDC1ArOKUNHBUsJAGYZAuCgfLdlAvjfAo1kDCONFN15v7BIr_4p55yDW_ADe7gaIFzuWDF9s0wbnHsTlU__3p5uwo",
   "accentcolor": "#058eee",
   "darkmode": true,
   "autocheck": false,
   "convetToMp3": true,
-  "saveInNewFolder": false,
-  "username": "Daniel",
-  "profilepic": "https://i.scdn.co/image/ab6775700000ee855a26300aeb37e82bc7c944af"
+  "saveInNewFolder": false
 }

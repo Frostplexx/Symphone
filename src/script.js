@@ -1,6 +1,6 @@
-const app = require('electron')
 const spotdl = require("./getSongs");
 const globals = require('./globals')
+
 
 //file stuff
 const fs = require('fs');
@@ -8,27 +8,123 @@ var path = require('path');
 var settingsPath = path.join(__dirname, "settings.json").toString();
 
 
-var SpotifyWebApi = require('spotify-web-api-node');
 const ytdl = require('ytdl-core');
 const youtube = require('scrape-youtube').default;
 
+//spotify stuff
+var SpotifyWebApi = require('spotify-web-api-node');
+const express = require('express')
+const app = express();
 
-const spotifyApi = new SpotifyWebApi({
-  clientId: '179baf2322124fa3ad9cf70cc82ed8b2',
-  clientSecret: '0073bded3bae40a882cf5065c6091f08',
-  redirectUri: 'http://localhost:8888/callback'
+var xmlHttp = new XMLHttpRequest();
+
+var scopes = [
+  'ugc-image-upload',
+  'user-read-playback-state',
+  'user-modify-playback-state',
+  'user-read-currently-playing',
+  'streaming',
+  'app-remote-control',
+  'user-read-email',
+  'user-read-private',
+  'playlist-read-collaborative',
+  'playlist-modify-public',
+  'playlist-read-private',
+  'playlist-modify-private',
+  'user-library-modify',
+  'user-library-read',
+  'user-top-read',
+  'user-read-playback-position',
+  'user-read-recently-played',
+  'user-follow-read',
+  'user-follow-modify'
+],
+  redirectUri = 'http://localhost:8888/callback',
+  clientId = '',
+  clientSecret = "",
+  showDialog = false,
+  state = 'axz_djt8rja-rau4HTE',
+  responseType = 'code';
+
+
+// Setting credentials can be done in the wrapper's constructor, or using the API object's setters.
+var spotifyApi = new SpotifyWebApi({
+  redirectUri: redirectUri,
+  clientId: clientId,
+  clientSecret: clientSecret
 });
 
-spotifyApi.setAccessToken(readSettings("access_token"));
-spotifyApi.setRefreshToken(readSettings("refresh_token"));
+// Create the authorization URL
+var authorizeURL = spotifyApi.createAuthorizeURL(
+  scopes,
+  state,
+  showDialog,
+  responseType
+);
+
+var server = app.listen(8888);
 
 
-//profile stuff
-document.getElementById("username").innerHTML = readSettings("username");
-document.getElementById("userprofilepic").src = readSettings("profilepic")
+app.get('/callback', (req, res) => {
+  const error = req.query.error;
+  const code = req.query.code;
+  if (error) {
+      console.error('Callback Error:', error);
+      res.send(`Callback Error: ${error}`);
+      return;
+  }
 
-//other vars
-var youtubelink = "";
+  spotifyApi
+  .authorizationCodeGrant(code)
+  .then(data => {
+      const access_token = data.body['access_token'];
+      const refresh_token = data.body['refresh_token'];
+      const expires_in = data.body['expires_in'];
+      spotifyApi.setAccessToken(access_token);
+      spotifyApi.setRefreshToken(refresh_token);
+      res.send('SUCCESS');
+      setInterval(async () => {
+          let data1 = await spotifyApi.refreshAccessToken();
+          let access_token1 = data1.body['access_token'];
+          console.log('The access token has been refreshed!');
+          console.log('access_token:', access_token1);
+          spotifyApi.setAccessToken(access_token1);
+      }, expires_in / 2 * 1000);
+      server.close()
+      spotifyApi.getMe().then(test => {
+        let profilepic = document.getElementById("profilepic");
+        let profilename = document.getElementById("profilename");
+        profilepic.src =  test.body["images"][0]["url"]
+        profilename.innerHTML = test.body["display_name"];
+    });
+  })
+  .catch(e => {
+
+      console.error('Error getting Tokens:', e);
+
+      res.send(`Error getting Tokens: ${e}`);
+
+  });
+
+});
+
+
+
+xmlHttp.open( "GET", authorizeURL, true ); // false for synchronous request
+xmlHttp.onload = function() {
+  if (xmlHttp.status === 200 && xmlHttp.responseText !== "SUCCESS") {
+    window.open(authorizeURL)
+    window.document.title = "Log into Spotify"
+  }
+
+};
+xmlHttp.send();
+
+
+
+//spoitfy login handling and stuff
+
+
 
 // Coloring
 
@@ -51,23 +147,7 @@ var youtubelink = "";
     }
   }
 
-  let darkswitch = document.getElementById("darkswitch");
-  // darkswitch.addEventListener("change", darkmode);
-  // darkswitch.checked = readSettings("darkmode");
 
-  // if (darkswitch.checked) {
-  //   document.documentElement.style.setProperty('--background-color', "#1F2428");
-  //   document.documentElement.style.setProperty('--darkmode-secondcolor', "#424242");
-  //   document.documentElement.style.setProperty('--darkmode-text-color', "#ebebeb");
-  //   document.documentElement.style.setProperty('--hover-color', "#363636");
-  //   document.documentElement.style.setProperty('--tab-hover-color', "#ababab");
-  // } else {
-  //   document.documentElement.style.setProperty('--background-color', "#FFFFFF");
-  //   document.documentElement.style.setProperty('--darkmode-secondcolor',"#FFFFFF");
-  //   document.documentElement.style.setProperty('--darkmode-text-color', "#4a4a4a");
-  //   document.documentElement.style.setProperty('--hover-color', "#f2f2f2");
-  //   document.documentElement.style.setProperty('--tab-hover-color', "#919191");
-  // }
 
   function darkmode() {
     // console.log(darkswitch.checked);
@@ -90,26 +170,6 @@ var youtubelink = "";
   function accentReset() {
     accentpicker.value = "#058eee"
     updateColor();
-  }
-
-
-  /**
- * Calculate brightness value by RGB or HEX color.
- * @param color (String) The color value in RGB or HEX (for example: #000000 || #000 || rgb(0,0,0) || rgba(0,0,0,0))
- * @returns (Number) The brightness value (dark) 0 ... 255 (light)
- */
-  function brightnessByColor(color) {
-    var color = "" + color, isHEX = color.indexOf("#") == 0, isRGB = color.indexOf("rgb") == 0;
-    if (isHEX) {
-      const hasFullSpec = color.length == 7;
-      var m = color.substr(1).match(hasFullSpec ? /(\S{2})/g : /(\S{1})/g);
-      if (m) var r = parseInt(m[0] + (hasFullSpec ? '' : m[0]), 16), g = parseInt(m[1] + (hasFullSpec ? '' : m[1]), 16), b = parseInt(m[2] + (hasFullSpec ? '' : m[2]), 16);
-    }
-    if (isRGB) {
-      var m = color.match(/(\d+){3}/g);
-      if (m) var r = m[0], g = m[1], b = m[2];
-    }
-    if (typeof r != "undefined") return ((r * 299) + (g * 587) + (b * 114)) / 1000;
   }
 
 }
@@ -162,7 +222,13 @@ function urlHandler(event){
       spotifyApi.getPlaylist(id).then(res => {
          let json = res.body
          document.getElementById("placeholder").style.display = "none"
-         document.getElementById("cover").src = json["images"][0]["url"]
+         let img = document.getElementById("cover")
+         img.onload = function(){
+          let main_color = globals.hexToRgbA(globals.ColorExtract(img.src));
+          let second_color = globals.changeBrightness(main_color, 1.25)
+          document.getElementById("musicbox").style.background = `linear-gradient(50deg, ${second_color} 0%, ${main_color} 100%)`
+         }
+         img.src = json["images"][0]["url"]
          document.getElementById("title").innerHTML = json["name"]
          document.getElementById("author").innerHTML = "By " + json["owner"]["display_name"] + " • " + json["tracks"]["total"] + " Songs"
          document.getElementById("musicbox").classList.add("is-active");
@@ -202,7 +268,13 @@ function urlHandler(event){
       document.getElementById("placeholder").style.display = "none"
       document.getElementById("title").innerHTML = info["player_response"]["videoDetails"]["title"]
       document.getElementById("author").innerHTML = "By " + info["player_response"]["videoDetails"]["author"]
-      document.getElementById("cover").src = info.player_response.videoDetails.thumbnail.thumbnails[4].url
+      let img = document.getElementById("cover")
+         img.onload = function(){
+          let main_color = globals.hexToRgbA(globals.ColorExtract(img.src));
+          let second_color = globals.changeBrightness(main_color, 1.25)
+          document.getElementById("musicbox").style.background = `linear-gradient(50deg, ${second_color} 0%, ${main_color} 100%)`
+         }
+        img.src = info.player_response.videoDetails.thumbnail.thumbnails[4].url
       document.getElementById("musicbox").classList.add("is-active");
       document.getElementById("spoticn").classList.remove("fa-spotify");
       document.getElementById("spoticn").classList.add("fa-youtube");
@@ -215,7 +287,13 @@ function urlHandler(event){
     spotifyApi.getTrack(id).then(res => {
        let json = res.body
        document.getElementById("placeholder").style.display = "none"
-       document.getElementById("cover").src = json["album"]["images"][0]["url"]
+       let img = document.getElementById("cover")
+       img.onload = function(){
+        let main_color = globals.hexToRgbA(globals.ColorExtract(img.src));
+        let second_color = globals.changeBrightness(main_color, 1.25)
+        document.getElementById("musicbox").style.background = `linear-gradient(50deg, ${second_color} 0%, ${main_color} 100%)`
+       }
+      img.src = json["album"]["images"][0]["url"]
        document.getElementById("title").innerHTML = json["name"]
        document.getElementById("author").innerHTML = "By " + json["artists"][0]["name"] + " • " + json["album"]["name"] 
        document.getElementById("musicbox").classList.add("is-active");
@@ -249,9 +327,15 @@ function urlHandler(event){
         document.getElementById("placeholder").style.display = "none"
         document.getElementById("title").innerHTML = info["player_response"]["videoDetails"]["title"]
         document.getElementById("author").innerHTML = "By " + info["player_response"]["videoDetails"]["author"]
-        document.getElementById("cover").src = info.player_response.videoDetails.thumbnail.thumbnails[
-          info.player_response.videoDetails.thumbnail.thumbnails.length - 1
-        ].url
+        let img = document.getElementById("cover")
+        img.onload = function(){
+         let main_color = globals.hexToRgbA(globals.ColorExtract(img.src));
+         let second_color = globals.changeBrightness(main_color, 1.25)
+         document.getElementById("musicbox").style.background = `linear-gradient(50deg, ${second_color} 0%, ${main_color} 100%)`
+        }
+       img.src = info.player_response.videoDetails.thumbnail.thumbnails[
+        info.player_response.videoDetails.thumbnail.thumbnails.length - 1
+      ].url
         document.getElementById("musicbox").classList.add("is-active");
   
         document.getElementById("spoticn").classList.remove("fa-spotify");
@@ -264,11 +348,6 @@ function urlHandler(event){
   } else {
     globals.generateMessage("Error", "This URL couldn't be recognized. Please enter a Youtube or Spotify URL", 0)
   }
-
-  setTimeout(function() {
-    globals.ColorExtract();
-  }, 700);
-
 }
 
 function playAnimation() {
@@ -290,7 +369,7 @@ function playAnimation() {
   document.getElementById("searchloader").classList.remove("is-active");
 }
 
-
+//moreoptions
 document.getElementById("moreoptions").addEventListener("click",moreoptionsHanlder)
 function moreoptionsHanlder() {
   let optbtn = document.getElementById("moreoptions")
@@ -368,7 +447,6 @@ async function browse(fieldid) {
 }
 
 
-
 //dorpdown and converter
 
 //ffmpeg
@@ -409,6 +487,7 @@ document.getElementById("convbtn").addEventListener("click", () => {
   
 })
 
+//creates song list item
 function createSong(songname){
   //song item settings
   let itemcont = document.createElement("div")
@@ -448,21 +527,12 @@ function createSong(songname){
 
 }
 
-function fetchProfile(){
-  let profilepic = document.getElementById("profilepic");
-  let profilename = document.getElementById("profilename");
 
-  profilepic.src = readSettings("profilepic");
-  profilename.innerHTML = readSettings("username");
-}
-
-
+//idk why these are here but i dont want to move them to globals
 var msgqueue = {
   items: [
-
   ]
 }
-
 var types = [
   "is-danger",
   "is-warning", 
@@ -519,5 +589,3 @@ if(process.platform === "win32") {
       }
   };
 })();
-
-

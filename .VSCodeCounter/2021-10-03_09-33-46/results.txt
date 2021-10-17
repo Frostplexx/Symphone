@@ -1,0 +1,46 @@
+Date : 2021-10-03 09:33:46
+Directory : /Users/danielinama/Documents/GitHub/Symphone
+Total : 13 files,  16527 codes, 150 comments, 998 blanks, all 17675 lines
+
+Languages
++------------+------------+------------+------------+------------+------------+
+| language   | files      | code       | comment    | blank      | total      |
++------------+------------+------------+------------+------------+------------+
+| CSS        |          2 |      7,904 |         41 |        749 |      8,694 |
+| JSON       |          2 |      7,307 |          0 |          2 |      7,309 |
+| JavaScript |          6 |      1,113 |        108 |        214 |      1,435 |
+| HTML       |          1 |        188 |          1 |         27 |        216 |
+| SCSS       |          1 |         13 |          0 |          3 |         16 |
+| Markdown   |          1 |          2 |          0 |          3 |          5 |
++------------+------------+------------+------------+------------+------------+
+
+Directories
++---------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                | files      | code       | comment    | blank      | total      |
++---------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                   |         13 |     16,527 |        150 |        998 |     17,675 |
+| css                                                                 |          2 |      7,904 |         41 |        749 |      8,694 |
+| sass                                                                |          1 |         13 |          0 |          3 |         16 |
+| src                                                                 |          7 |      1,301 |        109 |        241 |      1,651 |
+| src/scripts                                                         |          1 |        120 |         13 |         36 |        169 |
++---------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++---------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| filename                                                            | language   | code       | comment    | blank      | total      |
++---------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| /Users/danielinama/Documents/GitHub/Symphone/README.md              | Markdown   |          2 |          0 |          3 |          5 |
+| /Users/danielinama/Documents/GitHub/Symphone/css/index.css          | CSS        |        307 |         10 |         81 |        398 |
+| /Users/danielinama/Documents/GitHub/Symphone/css/mystyles.css       | CSS        |      7,597 |         31 |        668 |      8,296 |
+| /Users/danielinama/Documents/GitHub/Symphone/package-lock.json      | JSON       |      7,232 |          0 |          1 |      7,233 |
+| /Users/danielinama/Documents/GitHub/Symphone/package.json           | JSON       |         75 |          0 |          1 |         76 |
+| /Users/danielinama/Documents/GitHub/Symphone/sass/mystyles.scss     | SCSS       |         13 |          0 |          3 |         16 |
+| /Users/danielinama/Documents/GitHub/Symphone/src/getSongs.js        | JavaScript |        317 |         20 |         35 |        372 |
+| /Users/danielinama/Documents/GitHub/Symphone/src/getToken.js        | JavaScript |         97 |          3 |         17 |        117 |
+| /Users/danielinama/Documents/GitHub/Symphone/src/globals.js         | JavaScript |        116 |          4 |         21 |        141 |
+| /Users/danielinama/Documents/GitHub/Symphone/src/index.html         | HTML       |        188 |          1 |         27 |        216 |
+| /Users/danielinama/Documents/GitHub/Symphone/src/index.js           | JavaScript |         79 |         15 |         17 |        111 |
+| /Users/danielinama/Documents/GitHub/Symphone/src/script.js          | JavaScript |        384 |         53 |         88 |        525 |
+| /Users/danielinama/Documents/GitHub/Symphone/src/scripts/updater.js | JavaScript |        120 |         13 |         36 |        169 |
+| Total                                                               |            |     16,527 |        150 |        998 |     17,675 |
++---------------------------------------------------------------------+------------+------------+------------+------------+------------+

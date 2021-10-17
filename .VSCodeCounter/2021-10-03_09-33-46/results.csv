@@ -1,0 +1,15 @@
+"filename", "language", "JavaScript", "HTML", "JSON", "SCSS", "CSS", "Markdown", "comment", "blank", "total"
+"/Users/danielinama/Documents/GitHub/Symphone/README.md", "Markdown", 0, 0, 0, 0, 0, 2, 0, 3, 5
+"/Users/danielinama/Documents/GitHub/Symphone/css/index.css", "CSS", 0, 0, 0, 0, 307, 0, 10, 81, 398
+"/Users/danielinama/Documents/GitHub/Symphone/css/mystyles.css", "CSS", 0, 0, 0, 0, 7597, 0, 31, 668, 8296
+"/Users/danielinama/Documents/GitHub/Symphone/package-lock.json", "JSON", 0, 0, 7232, 0, 0, 0, 0, 1, 7233
+"/Users/danielinama/Documents/GitHub/Symphone/package.json", "JSON", 0, 0, 75, 0, 0, 0, 0, 1, 76
+"/Users/danielinama/Documents/GitHub/Symphone/sass/mystyles.scss", "SCSS", 0, 0, 0, 13, 0, 0, 0, 3, 16
+"/Users/danielinama/Documents/GitHub/Symphone/src/getSongs.js", "JavaScript", 317, 0, 0, 0, 0, 0, 20, 35, 372
+"/Users/danielinama/Documents/GitHub/Symphone/src/getToken.js", "JavaScript", 97, 0, 0, 0, 0, 0, 3, 17, 117
+"/Users/danielinama/Documents/GitHub/Symphone/src/globals.js", "JavaScript", 116, 0, 0, 0, 0, 0, 4, 21, 141
+"/Users/danielinama/Documents/GitHub/Symphone/src/index.html", "HTML", 0, 188, 0, 0, 0, 0, 1, 27, 216
+"/Users/danielinama/Documents/GitHub/Symphone/src/index.js", "JavaScript", 79, 0, 0, 0, 0, 0, 15, 17, 111
+"/Users/danielinama/Documents/GitHub/Symphone/src/script.js", "JavaScript", 384, 0, 0, 0, 0, 0, 53, 88, 525
+"/Users/danielinama/Documents/GitHub/Symphone/src/scripts/updater.js", "JavaScript", 120, 0, 0, 0, 0, 0, 13, 36, 169
+"Total", "-", 1113, 188, 7307, 13, 7904, 2, 150, 998, 17675
