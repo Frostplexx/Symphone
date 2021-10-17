@@ -68,7 +68,7 @@
     "@electron-forge/maker-zip": "^6.0.0-beta.54",
     "babel-preset-stage-0": "^6.24.1",
     "bulma": "^0.9.2",
-    "electron": "12.0.7",
+    "electron": "12.1.0",
     "electron-packager": "^15.3.0",
     "node-sass": "^6.0.0"
   }
