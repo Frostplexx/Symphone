@@ -58,7 +58,12 @@
     "request": "^2.88.2",
     "scrape-youtube": "^2.1.9",
     "spotify-web-api-node": "^5.0.2",
-    "ytdl-core": "^4.9.1"
+    "ytdl-core": "^4.9.1",
+    "http-proxy": ">=1.18.1",
+    "underscore": ">=1.12.1",
+    "trim-newlines": ">=3.0.1",
+    "ansi-regex": ">=5.0.1"
+
   },
   "devDependencies": {
     "@electron-forge/cli": "^6.0.0-beta.54",

@@ -82,7 +82,17 @@ app.get('/callback', (req, res) => {
       const expires_in = data.body['expires_in'];
       spotifyApi.setAccessToken(access_token);
       spotifyApi.setRefreshToken(refresh_token);
+      let window = remote.getCurrentWindow
+      console.log(window.title)
+      if(window.title === "Spotify Login"){
+        window.close();
+      }
       res.send('SUCCESS');
+      spotifyApi.getMe().then(me => {
+        document.getElementById("userprofilepic").src = me.body["images"][0]["url"]
+        document.getElementById("username").innerHTML = me.body["display_name"]
+      }); 
+
       setInterval(async () => {
           let data1 = await spotifyApi.refreshAccessToken();
           let access_token1 = data1.body['access_token'];
@@ -91,12 +101,6 @@ app.get('/callback', (req, res) => {
           spotifyApi.setAccessToken(access_token1);
       }, expires_in / 2 * 1000);
       server.close()
-      spotifyApi.getMe().then(test => {
-        let profilepic = document.getElementById("profilepic");
-        let profilename = document.getElementById("profilename");
-        profilepic.src =  test.body["images"][0]["url"]
-        profilename.innerHTML = test.body["display_name"];
-    });
   })
   .catch(e => {
 
@@ -113,13 +117,13 @@ app.get('/callback', (req, res) => {
 xmlHttp.open( "GET", authorizeURL, true ); // false for synchronous request
 xmlHttp.onload = function() {
   if (xmlHttp.status === 200 && xmlHttp.responseText !== "SUCCESS") {
-    window.open(authorizeURL)
-    window.document.title = "Log into Spotify"
+    let mywindow = window.open(authorizeURL)
+    mywindow.document.title = "Log into Spotify"
+    mywindow.title = "login"
   }
 
 };
 xmlHttp.send();
-
 
 
 //spoitfy login handling and stuff
@@ -260,7 +264,7 @@ function urlHandler(event){
 
     document.getElementById("downbtn").disabled = true;
 
-  } else if(query.includes("youtube.com") && !query.includes("&list=")){
+  } else if(query.includes("https://www.youtube.com/") && !query.includes("&list=")){
     document.getElementById("searchloader").classList.add("is-active");
     ytdl.getBasicInfo(query).then((info) =>{
       console.log(info.player_response.videoDetails.thumbnail.thumbnails);
@@ -304,7 +308,7 @@ function urlHandler(event){
        playAnimation();
       });
 
-  } else if (query.includes("youtube.com") && query.includes("&list=")){
+  } else if (query.includes("https://www.youtube.com/") && query.includes("&list=")){
     document.getElementById("placeholder").style.display = "none"
     document.getElementById("title").innerHTML = "Youtube Playlists"
     document.getElementById("author").innerHTML = "Are currently not Supported"
@@ -452,6 +456,7 @@ async function browse(fieldid) {
 //ffmpeg
 var ffmpeg = require('fluent-ffmpeg');
 var ffmpegstatic = require('ffmpeg-static-electron');
+const { remote, BrowserWindow } = require("electron");
 ffmpeg.setFfmpegPath(ffmpegstatic.path);
 
 var files = ""
