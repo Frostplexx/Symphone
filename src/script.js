@@ -1,57 +1,41 @@
 const spotdl = require("./getSongs");
 const globals = require('./globals')
 
-
 //file stuff
 const fs = require('fs');
 var path = require('path');
 var settingsPath = path.join(__dirname, "settings.json").toString();
 
+//ffmpeg
+var ffmpeg = require('fluent-ffmpeg');
+var ffmpegstatic = require('ffmpeg-static-electron');
+const {BrowserWindow} = require('electron').remote
 
 const ytdl = require('ytdl-core');
 const youtube = require('scrape-youtube').default;
 
 //spotify stuff
 var SpotifyWebApi = require('spotify-web-api-node');
-const express = require('express')
-const app = express();
+const { session } = require('electron').remote;
 
-var xmlHttp = new XMLHttpRequest();
 
+
+//spoitfy login handling and stuff
 var scopes = [
-  'ugc-image-upload',
-  'user-read-playback-state',
-  'user-modify-playback-state',
-  'user-read-currently-playing',
-  'streaming',
-  'app-remote-control',
-  'user-read-email',
-  'user-read-private',
-  'playlist-read-collaborative',
-  'playlist-modify-public',
-  'playlist-read-private',
-  'playlist-modify-private',
-  'user-library-modify',
-  'user-library-read',
-  'user-top-read',
-  'user-read-playback-position',
-  'user-read-recently-played',
-  'user-follow-read',
-  'user-follow-modify'
+  "user-read-private",
+  "user-read-email"
 ],
   redirectUri = 'http://localhost:8888/callback',
-  clientId = '',
-  clientSecret = "",
+  clientId = '77431d7e304f4659adf1db5d1f676035',
   showDialog = false,
   state = 'axz_djt8rja-rau4HTE',
-  responseType = 'code';
-
+  responseType = 'token',
+  response = {};
 
 // Setting credentials can be done in the wrapper's constructor, or using the API object's setters.
 var spotifyApi = new SpotifyWebApi({
   redirectUri: redirectUri,
-  clientId: clientId,
-  clientSecret: clientSecret
+  clientId: clientId
 });
 
 // Create the authorization URL
@@ -62,71 +46,59 @@ var authorizeURL = spotifyApi.createAuthorizeURL(
   responseType
 );
 
-var server = app.listen(8888);
+authorizeSpotify();
 
+function authorizeSpotify(){
 
-app.get('/callback', (req, res) => {
-  const error = req.query.error;
-  const code = req.query.code;
-  if (error) {
-      console.error('Callback Error:', error);
-      res.send(`Callback Error: ${error}`);
-      return;
-  }
+  // Prepare to filter only the callbacks for my redirectUri
+  const filter = {
+    urls: [redirectUri + '*']
+  };
 
-  spotifyApi
-  .authorizationCodeGrant(code)
-  .then(data => {
-      const access_token = data.body['access_token'];
-      const refresh_token = data.body['refresh_token'];
-      const expires_in = data.body['expires_in'];
-      spotifyApi.setAccessToken(access_token);
-      spotifyApi.setRefreshToken(refresh_token);
-      let window = remote.getCurrentWindow
-      console.log(window.title)
-      if(window.title === "Spotify Login"){
-        window.close();
-      }
-      res.send('SUCCESS');
-      spotifyApi.getMe().then(me => {
-        document.getElementById("userprofilepic").src = me.body["images"][0]["url"]
-        document.getElementById("username").innerHTML = me.body["display_name"]
-      }); 
+  var authWindow = new BrowserWindow({
+    width: 800, 
+    height: 600, 
+    show: false, 
+    'node-integration': false,
+    'web-security': false
+  });
+  authWindow.show()
+  // intercept all the requests for that includes my redirect uri -> parses token etc into response variable
+  session.defaultSession.webRequest.onBeforeRequest(filter, function (details, callback) {
+    authWindow.hide()
+    let url = details.url;
+    // process the callback url and get any param you need
+    url = url.replace(redirectUri + "#", "")
+    url = url.split("&");
+    response = {
+      "access_token": url[0].split("=")[1],
+      "token_type": url[1].split("=")[1],
+      "expires_in": url[2].split("=")[1],
+      "state": url[3].split("=")[1],
+    }
 
-      setInterval(async () => {
-          let data1 = await spotifyApi.refreshAccessToken();
-          let access_token1 = data1.body['access_token'];
-          console.log('The access token has been refreshed!');
-          console.log('access_token:', access_token1);
-          spotifyApi.setAccessToken(access_token1);
-      }, expires_in / 2 * 1000);
-      server.close()
-  })
-  .catch(e => {
+    //set access token
+    spotifyApi.setAccessToken(response["access_token"]);
 
-      console.error('Error getting Tokens:', e);
+    //profile
+    spotifyApi.getMe().then(me => {
+      document.getElementById("userprofilepic").src = me.body["images"][0]["url"]
+      document.getElementById("username").innerHTML = me.body["display_name"]
+    }); 
 
-      res.send(`Error getting Tokens: ${e}`);
+    setInterval(async () => {
+      authorizeSpotify();
+    }, response["expires_in"] / 2 * 1000);
 
+    // don't forget to let the request proceed
+    callback({
+      cancel: false
+    });
   });
 
-});
+  authWindow.loadURL(authorizeURL);
 
-
-
-xmlHttp.open( "GET", authorizeURL, true ); // false for synchronous request
-xmlHttp.onload = function() {
-  if (xmlHttp.status === 200 && xmlHttp.responseText !== "SUCCESS") {
-    let mywindow = window.open(authorizeURL)
-    mywindow.document.title = "Log into Spotify"
-    mywindow.title = "login"
-  }
-
-};
-xmlHttp.send();
-
-
-//spoitfy login handling and stuff
+}
 
 
 
@@ -453,10 +425,7 @@ async function browse(fieldid) {
 
 //dorpdown and converter
 
-//ffmpeg
-var ffmpeg = require('fluent-ffmpeg');
-var ffmpegstatic = require('ffmpeg-static-electron');
-const { remote, BrowserWindow } = require("electron");
+
 ffmpeg.setFfmpegPath(ffmpegstatic.path);
 
 var files = ""
@@ -572,7 +541,6 @@ if(process.platform === "win32") {
 }
 (function () {
   // Retrieve remote BrowserWindow
-  const {BrowserWindow} = require('electron').remote
 
   function init() {
       // Minimize task

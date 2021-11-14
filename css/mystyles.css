@@ -293,6 +293,7 @@ button {
   border-radius: 5%;
   object-fit: cover;
   box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.8);
+  transition: opacity 1s ease-in-out;
 }
 
 #title{
@@ -449,7 +450,6 @@ button {
   transform: translate(-50%, -50%);
   transition: ease-out 0.1s;
 }
-
 
 
 /* -------------------- Beginning of generated CSS ---------------------- */
