@@ -89,3 +89,5 @@ typings/
 out/
 src/settings.json
 src/settings.json
+.VSCodeCounter/
+
