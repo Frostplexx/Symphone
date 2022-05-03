@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head> 
+  <meta charset="UTF-8">
+  <title>Symphone</title>
+  <link rel="stylesheet" type="text/css" href="../node_modules/bulma/css/bulma.css">
+  <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+  <link rel="stylesheet" href="css/mystyles.css">
+  <script defer src="/src/script.js"></script>
+  <script defer src="/src/"></script>
+
+</head>
+
+<body>
+
+  <div id="drag-region">
+    <div id="window-controls">
+      <div class="button" id="min-button">
+        <img class="titleicon" srcset="icons/min-w-10.png 1x, icons/min-w-12.png 1.25x, icons/min-w-15.png 1.5x, icons/min-w-15.png 1.75x, icons/min-w-20.png 2x, icons/min-w-20.png 2.25x, icons/min-w-24.png 2.5x, icons/min-w-30.png 3x, icons/min-w-30.png 3.5x" draggable="false" />
+      </div>
+      <div class="button" id="close-button">
+        <img class="titleicon" srcset="icons/close-w-10.png 1x, icons/close-w-12.png 1.25x, icons/close-w-15.png 1.5x, icons/close-w-15.png 1.75x, icons/close-w-20.png 2x, icons/close-w-20.png 2.25x, icons/close-w-24.png 2.5x, icons/close-w-30.png 3x, icons/close-w-30.png 3.5x" draggable="false" />
+      </div>
+    </div>
+  </div>
+
+  <span>
+    <img id="userprofilepic" src=""/>
+    <div id="username"></div>
+
+  </span>  
+  <div id="seldiv">
+    <aside class="menu" id="leftmenu">
+      <p class="menu-label">
+        Download
+      </p>
+      <ul class="menu-list">
+        <li><a onclick="menuswitch('download', this)" class="is-active">
+          <span id="icon">
+            <i class="fas fa-download"></i>
+          </span>
+          &nbspDownload
+        </a></li>
+        <li><a onclick="menuswitch('convert', this)">
+          <span id="icon">
+            <i class="fas fa-arrows-alt-h"></i>
+          </span>
+          &nbspConvert
+        </a></li>
+      </ul>
+      <p class="menu-label">
+        Spotify
+      </p>
+      <ul class="menu-list">
+        <li><a onclick="menuswitch('playlists', this)">
+            <span id="icon">
+              <i class="fas fa-file-audio"></i>
+            </span>
+            &nbspMy Playlists
+          </a></li>
+      </ul>
+      <p class="menu-label">
+        Other
+      </p>
+      <ul class="menu-list">
+        <li><a onclick="menuswitch('settings', this)">
+            <span id="icon">
+              <i class="fas fa-cog"></i>
+            </span>
+            &nbspSettings
+          </a></li>
+        <li><a onclick="menuswitch('help', this)">
+            <span id="icon">
+              <i class="far fa-question-circle"></i>
+            </span>
+            &nbspHelp
+          </a></li>
+      </ul>
+    </aside>
+  </div>
+
+
+  <div id="contentdiv">
+    
+    <div id="download" class="maincont is-active">
+        <form class="block">
+          <div class="field">
+            <p class="control">
+              <input class="input has-text-centered" type="text" placeholder="&#128269 Enter URL or Search" id="urlfield">
+              <div class="loader" id="searchloader"></div>
+            </p>
+          </div>
+        </form>
+      
+      <div class="box" style="margin-top: 8.5rem; padding: 1rem;"  id="musicbox">
+        <h1 id="title"></h1>
+        <h3 id="author"></h3>
+        <img id="cover" src="https://via.placeholder.com/640"/>
+        <span >
+          <i id="spoticn" class="fab"></i>
+        </span>
+      </div>
+      <span id="placeholder">
+        You can download from
+        Spotify or Youtube
+        By entering your Playlist link or by searching for a song
+      </span>
+      <!-- <img id="placeholder" src="https://i.imgur.com/YnyXUTL.png"/> -->
+
+      <div>
+        <button class="button is-primary is-centered" id="dirbtn" disabled onclick="browse('directory')">
+          <span class="icon">
+            <i class="fas fa-folder-open"></i>
+          </span>
+          <span>
+            Choose Folder
+          </span>
+        </button>
+        <div id="directory"></div>
+        <button class="button is-primary is-centered" id="moreoptions" disabled>
+          <span class="icon">
+            <i class="fas fa-cog" id="moreopticon"></i>
+          </span>
+        </button>
+        <div class="box" id="moreoptionsbox">
+          <div>
+            <label class="switch">
+              <input type="checkbox" id="converttomp3">
+              <span class="slider round"></span>
+            </label>
+            <span>
+              Convert video to mp3
+            </span>
+          </div>
+
+          <div>
+            <label class="switch">
+              <input type="checkbox" id="saveinnewfolder">
+              <span class="slider round"></span>
+            </label>
+            <span>
+              Save in new folder
+            </span>
+          </div>
+
+        </div>
+      </div>
+
+      <button class="button is-primary is-centered " id="downbtn" disabled onclick="download()">
+        <span class="icon">
+          <i class="fas fa-arrow-down"></i>
+        </span>
+        <span>
+          Download
+        </span>
+      </button>
+      
+      <span id="currentdownloadedsong">
+        Loading...
+      </span>
+      <span id="timeestimate">
+        (0MB/0MB) | Time left: 0.00 Minutes
+      </span>
+      <progress class="progress is-primary is-small" value="0" max="0" id="loadingbar"></progress>
+        
+
+      <article class="message" id="message">
+        <div class="message-header">
+          <p id="messageTitle">Placeholder</p>
+          <button class="delete" aria-label="delete" onclick="deleteMessage()"></button>
+        </div>
+        <div class="message-body" id="messageContent">
+          Lorem Ipsum Dolor antem
+        </div>
+      </article>
+
+    </div>
+
+
+    <div id="convert" class="maincont">
+      <div class="buttons" id="buttongroup">
+        <div id="convdirectory"></div>
+        <button class="button is-primary" id="dirconvbtn" onclick="browse('convdirectory')">
+          <span class="icon">
+            <i class="fas fa-folder-open"></i>
+          </span>
+          <span>
+            Choose Folder
+          </span>
+        </button>
+        <button class="button is-primary" id="convbtn">
+        <span class="icon">
+          <i class="fas fa-exchange-alt"></i>
+        </span>
+        <span>
+          Convert
+        </span>
+        </button>
+      </div>
+
+      <div class="box" id="filescontainer">
+      </div>
+
+    </div>
+    <div id="download" class="maincont">
+    </div>
+
+
+  </div>
+
+</body>
+
+</html>
